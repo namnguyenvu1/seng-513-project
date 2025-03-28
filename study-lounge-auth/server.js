@@ -63,6 +63,39 @@ app.post("/login", (req, res) => {
   });
 });
 
+// Reset password route (assuming email is passed too)
+app.post("/reset-password", async (req, res) => {
+    const { email, newPassword } = req.body;
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+  
+    db.query(
+      "UPDATE users SET password = ? WHERE email = ?",
+      [hashedPassword, email],
+      (err, result) => {
+        if (err) return res.status(500).send("Database error.");
+        if (result.affectedRows === 0) return res.status(404).send("User not found.");
+        res.send("Password updated successfully.");
+      }
+    );
+  });
+  
+
+app.get("/friends", (req, res) => {
+  db.query("SELECT name, avatar FROM friends", (err, results) => {
+    if (err) return res.status(500).send("DB error");
+    res.json(results);
+  });
+});
+
+app.post("/friends/remove", (req, res) => {
+  const { name } = req.body;
+  db.query("DELETE FROM friends WHERE name = ?", [name], (err) => {
+    if (err) return res.status(500).send("Failed to remove friend");
+    res.send("Friend removed");
+  });
+});
+
+
 // Start server
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");

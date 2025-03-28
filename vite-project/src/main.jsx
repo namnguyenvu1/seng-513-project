@@ -5,6 +5,12 @@ import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./LoginPage.jsx";
 import SignupPage from "./SignupPage.jsx";
+import ResetPasswordPage from "./ResetPasswordPage.jsx";
+import MainPage from "./MainPage";
+import ProfilePage from "./ProfilePage";
+import EditProfilePage from "./EditProfilePage";
+import FriendsListPage from "./FriendsListPage";
+import RoomPage from "./RoomPage";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -13,6 +19,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/reset" element={<ResetPasswordPage />} />
+        <Route path="/main" element={<MainPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/edit-profile" element={<EditProfilePage />} />
+        <Route path="/friends" element={<FriendsListPage />} />
+        <Route path="/room" element={<RoomPage />} />
         {/* Future: ForgotPasswordPage, MainAppPage */}
       </Routes>
     </BrowserRouter>

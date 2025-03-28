@@ -1,0 +1,164 @@
+.main-container {
+    background-color: #f3ad62;
+    height: 100vh;
+    padding: 20px;
+  }
+  
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .profile-icon {
+    width: 30px;
+    cursor: pointer;
+  }
+  
+  .rooms-grid {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .room {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  }
+  
+  .profile-wrapper {
+    position: relative;
+  }
+  
+  .profile-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .dropdown {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 100;
+  }
+  
+  .dropdown button {
+    padding: 10px 16px;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  
+  .dropdown button:hover {
+    background-color: #f3f3f3;
+  }
+  
+  .room {
+    background-color: white;
+    padding: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .room-image {
+    width: 60px;
+    height: 60px;
+    background-color: #eee;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+  
+
+  .confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+  }
+  
+  .confirm-box {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  }
+  
+  .confirm-box h3 {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+  }
+  
+  .confirm-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .yes-btn,
+  .no-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .yes-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .no-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+
+  .public-btn, .private-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .public-btn {
+    background-color: #42a5f5;
+  }
+  
+  .private-btn {
+    background-color: #ab47bc;
+  }
+  

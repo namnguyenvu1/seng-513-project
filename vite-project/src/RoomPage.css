@@ -1,0 +1,237 @@
+.room-container {
+    background-color: #f3ad62;
+    height: 100vh;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .room-layout {
+    background: #fff;
+    margin-top: 20px;
+    height: 80%;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .hamburger {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+  }
+  
+  .reminder {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    background-color: #ffefc5;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+  
+  .menu-popup {
+    position: absolute;
+    top: 60px;
+    right: 16px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+  }
+  
+  .menu-popup button {
+    background-color: #f4a261;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .menu-popup button:hover {
+    background-color: #e07b39;
+  }
+  
+  .todo-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    background: #fff;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    z-index: 20;
+  }
+  
+  .todo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .todo-input {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+  }
+  
+  .todo-input input {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .todo-input button {
+    background-color: #f4a261;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  
+  .todo-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 12px;
+    max-height: 180px;
+    overflow-y: auto;
+  }
+  
+  .todo-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 4px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .remove-task {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .ai-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: #a1724f;
+    color: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    z-index: 30;
+  }
+  
+  .ai-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .ai-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .ai-body {
+    display: flex;
+    margin-top: 20px;
+  }
+  
+  .ai-body input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 50px 0 0 50px;
+    font-size: 1rem;
+  }
+  
+  .ai-body button {
+    background-color: #f4a261;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 0 50px 50px 0;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .timer-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #f5e4d4;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    text-align: center;
+    z-index: 25;
+  }
+  
+  .timer-popup h3 {
+    margin-bottom: 12px;
+  }
+  
+  .time-inputs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+  }
+  
+  .time-inputs input {
+    width: 50px;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  .timer-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .cancel-btn, .ok-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .cancel-btn {
+    background: #ccc;
+    color: #000;
+  }
+  
+  .ok-btn {
+    background: #42b983;
+    color: white;
+  }
+  

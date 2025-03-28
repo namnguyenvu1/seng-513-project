@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import "./LoginPage.css";
+import { useNavigate } from "react-router-dom";
+
+
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,6 +21,7 @@ function LoginPage() {
 
     if (res.ok) {
       alert("Login successful!");
+      navigate("/main");
     } else {
       const msg = await res.text();
       alert("Login failed: " + msg);
@@ -44,7 +50,7 @@ function LoginPage() {
         <button type="submit">Login</button>
       </form>
       <div className="links">
-        <a href="/signup">Sign Up</a> | <a href="#">Forgot Password?</a>
+        <a href="/signup">Sign Up</a> | <a href="/reset">Forgot Password?</a>
       </div>
     </div>
   );
