@@ -1,59 +1,104 @@
-.signup-container {
-    background-color: #f3ad62;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .logo {
-    width: 60px;
-    margin-bottom: 10px;
-    border-radius: 50%;
-  }
-  
-  h2 {
-    margin-bottom: 20px;
-  }
-  
-  form {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 280px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  input {
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-  
-  small {
-    font-size: 0.8rem;
-    margin-bottom: 10px;
-    color: #555;
-  }
-  
-  button {
-    background-color: #f4a261;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-bottom: 10px;
-  }
-  
-  .cancel {
-    background: none;
-    border: none;
-    color: #333;
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
-  
+.page-container {
+  background-color: #f3ad62;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  background-color: #8b5e3c;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.header-logo {
+  width: 40px;
+  border-radius: 50%;
+  margin-right: auto; /* Pushes title to center */
+}
+
+.header-title {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  flex-grow: 1;
+  margin-right: 40px; /* Reserve space equal to logo width */
+}
+
+
+.login-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px; /* ✅ Add horizontal padding */
+}
+
+form {
+  background: #dcdcdc;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 300px; /* ✅ Limit max size */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+form h2 {
+  margin-bottom: 15px;
+  font-style: italic;
+  color: black; /* ✅ Make "Login" title visible */
+}
+
+.header-logo {
+  filter: none; /* ✅ Remove any color filters */
+}
+
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: none;
+  background-color: #a9a9a9;
+  color: white;
+  font-style: italic;
+  font-size: 16px;
+}
+
+input::placeholder {
+  color: white;
+}
+
+button {
+  background-color: #fcb043;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.links {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.links a {
+  text-decoration: none;
+  color: black;
+}
