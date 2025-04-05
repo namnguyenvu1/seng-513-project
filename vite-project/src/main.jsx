@@ -25,7 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/friends" element={<FriendsListPage />} />
         <Route path="/room" element={<RoomPage />} />
-        {/* Future: ForgotPasswordPage, MainAppPage */}
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
