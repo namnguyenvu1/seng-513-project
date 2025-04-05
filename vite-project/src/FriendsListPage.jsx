@@ -43,14 +43,14 @@ function FriendsListPage() {
         <button className="exit-btn" onClick={() => navigate("/profile")}>⮌</button>
       </div>
 
-      <div className="search-bar">
+      <div className="search-barFriends">
         <input
           type="text"
           placeholder="Search Friend"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button>Search</button>
+        <button className = "search-barFriends">Search</button>
       </div>
 
       <div className="friends-grid">
