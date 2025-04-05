@@ -4,6 +4,7 @@ import "./FriendsListPage.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import logo from './assets/logo.png';
+import backArrow from './assets/backbutton.png';
 
 function FriendsListPage() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ function FriendsListPage() {
       <div className="top-bar">
         <img src={logo} alt="Logo" className="header-logo" />
         <h1 className="header-title">Friends List</h1>
-        <button className="exit-btn" onClick={() => navigate("/profile")}>⮌</button>
+        <img src={backArrow} alt="Go Back" className="exit-btn" onClick={() => navigate("/main")}/>
       </div>
 
       <div className="search-barFriends">
