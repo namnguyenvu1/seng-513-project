@@ -30,10 +30,11 @@
 
   
   .edit-card {
-    background: #fff;
     border-radius: 16px;
     margin-top: 30px;
-    padding: 40px;
+    margin-left: 30px;
+    margin-right: 30px;
+    padding: 20px;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
   }
@@ -43,23 +44,23 @@
     justify-content: space-between;
     margin-bottom: 10px;
   }
+
   
-  .cancel-btn,
-  .save-btn {
-    padding: 8px 16px;
+  .cancel-btn {
+    background-color: white !important;
+    color: red !important;
+    margin-right: 30px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
   }
   
-  .cancel-btn {
-    background-color: #f44336;
-    color: white;
-  }
-  
   .save-btn {
-    background-color: #4caf50;
-    color: white;
+    background-color: white;
+    color: green;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
   }
   
   .avatar-section {
@@ -84,21 +85,38 @@
   }
   
   .username-input {
+    text-align: center;
     font-size: 1rem;
-    padding: 8px;
+    font-weight: 500;
+    border: none;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 8px 16px;
     margin-top: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    width: 100%;
+    width: auto;
+    max-width: 80%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    color: black;
+  }
+
+  .edit-container h3 {
+    text-align: left;
+    color: black;
   }
   
   .bio-input {
-    font-size: 0.9rem;
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    width: 100%;
-    resize: none;
+  font-size: 1rem;
+  padding: 12px 16px; /* ✅ uniform vertical and horizontal padding */
+  margin-top: 10px;
+  background-color: #fef1e6;  /* light beige background */
+  border-radius: 10px;
+  width: 100%;
+  resize: vertical;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: black;
+  font-family: sans-serif;
+  border: none;
+  box-sizing: border-box; /* ✅ make padding respect total width */
   }
   
