@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./EditProfilePage.css";
+import backArrow from './assets/backbutton.png';
+import logo from './assets/logo.png'; // adjust path if needed
 
 const avatars = [
   "/avatar1.png",
@@ -27,8 +29,8 @@ function EditProfilePage() {
   return (
     <div className="edit-container">
       <div className="edit-header">
-        <button className="exit-btn" onClick={() => navigate("/main")}>⮌</button>
-        <h2>Profile</h2>
+      <img src={logo} alt="Logo" className="header-logo" />
+      <img src={backArrow} alt="Go Back" className="exit-btn" onClick={() => navigate("/main")}/>
       </div>
 
       <div className="edit-card">

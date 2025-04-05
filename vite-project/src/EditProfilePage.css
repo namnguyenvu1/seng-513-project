@@ -1,28 +1,40 @@
 .edit-container {
     background-color: #f3ad62;
     height: 100vh;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
   }
   
   .edit-header {
+    background-color: #8b5e3c;
+    padding: 10px 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .header-logo {
+    width: 40px;
+    border-radius: 50%;
+    margin-right: auto; /* Pushes title to center */
   }
   
   .exit-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
+    border: 2px solid red;
+    position: relative;
   }
+
   
   .edit-card {
     background: #fff;
     border-radius: 16px;
-    margin-top: 20px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
+    padding: 40px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
   }
   
