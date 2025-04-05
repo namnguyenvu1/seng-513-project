@@ -30,6 +30,7 @@ function EditProfilePage() {
     <div className="edit-container">
       <div className="edit-header">
       <img src={logo} alt="Logo" className="header-logo" />
+      <h2>Edit Profile</h2>
       <img src={backArrow} alt="Go Back" className="exit-btn" onClick={() => navigate("/main")}/>
       </div>
 
@@ -50,6 +51,7 @@ function EditProfilePage() {
           onChange={(e) => setUsername(e.target.value)}
         />
 
+        <h3>About Me:</h3>
         <textarea
           className="bio-input"
           rows="4"

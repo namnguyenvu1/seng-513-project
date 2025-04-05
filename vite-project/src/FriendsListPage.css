@@ -1,72 +1,112 @@
 .friends-container {
-    background-color: #f3ad62;
-    height: 100vh;
-    padding: 20px;
-  }
-  
-  .friends-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .exit-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  .search-bar {
-    margin: 20px 0;
-    display: flex;
-    gap: 10px;
-  }
-  
-  .search-bar input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
-  
-  .search-bar button {
-    padding: 10px 16px;
-    background-color: #f4a261;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .friends-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 16px;
-  }
-  
-  .friend-card {
-    background: #fff;
-    padding: 12px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-  
-  .friend-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin-bottom: 8px;
-  }
-  
-  .unfriend-btn {
-    margin-top: 8px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
+  background-color: #f3ad62;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  background-color: #8b5e3c;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.header-logo {
+  width: 40px;
+  border-radius: 50%;
+  filter: none;
+}
+
+.header-title {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+.exit-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+  margin-left: auto;
+}
+
+.search-barFriends {
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+}
+
+.search-barFriends input {
+  font-style: normal;
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  height: 23px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border: 1px solid white;
+  border-color: #ffffff;
+  background-color: rgb(255, 255, 255);
+  color: black;
+}
+
+.search-barFriends input::placeholder {
+  color: rgb(0, 0, 0);
+}
+
+.search-barFriends button {
+  color: white;
+  float: right;
+  width: 200px;
+  padding: 6px;
+  margin-top: 8px;
+  margin-right: 16px;
+  margin-left: -10px;
+  background: #fcb043;
+  font-size: 17px;
+  border: 1px solid rgb(0, 0, 0);
+  border-color: #000000;
+  cursor: pointer;
+}
+
+
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  padding: 0 20px 20px;
+}
+
+.friend-card {
+  background: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.friend-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 8px;
+}
+
+.unfriend-btn {
+  margin-top: 8px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}

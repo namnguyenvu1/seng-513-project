@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./FriendsListPage.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import logo from './assets/logo.png';
 
 function FriendsListPage() {
   const navigate = useNavigate();
@@ -36,18 +37,20 @@ function FriendsListPage() {
 
   return (
     <div className="friends-container">
-      <div className="friends-header">
-        <h2>Friends List</h2>
+      <div className="top-bar">
+        <img src={logo} alt="Logo" className="header-logo" />
+        <h1 className="header-title">Friends List</h1>
         <button className="exit-btn" onClick={() => navigate("/profile")}>⮌</button>
       </div>
 
-      <div className="search-bar">
+      <div className="search-barFriends">
         <input
           type="text"
           placeholder="Search Friend"
           value={search}
-          onChange={(e) => setSearch(e.target.value)} // 👈 Live filtering
+          onChange={(e) => setSearch(e.target.value)}
         />
+        <button className = "search-barFriends">Search</button>
       </div>
 
       <div className="friends-grid">
