@@ -39,7 +39,7 @@ function LoginPage() {
 
           <div className="links">
           <a href="#" onClick={() => navigate("/signup")} style={{ color: 'red' }}>Sign Up</a>
-            <a href="#">Forgot Password?</a>
+          <a href="#" onClick={() => navigate("/reset-password")} style={{ color: 'black' }}>Forgot Password</a>
           </div>
         </form>
       </div>
