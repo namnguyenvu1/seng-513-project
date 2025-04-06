@@ -110,3 +110,12 @@
   border-radius: 6px;
   cursor: pointer;
 }
+
+.friends-card {
+  background-color: #f2ba72;
+  border-radius: 16px;
+  margin: 30px;
+  padding: 20px;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+}
+

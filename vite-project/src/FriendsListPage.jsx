@@ -44,27 +44,30 @@ function FriendsListPage() {
         <img src={backArrow} alt="Go Back" className="exit-btn" onClick={() => navigate("/main")}/>
       </div>
 
-      <div className="search-barFriends">
-        <input
-          type="text"
-          placeholder="Search Friend"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button className = "search-barFriends">Search</button>
-      </div>
+      <div className="friends-card">
+  <div className="search-barFriends">
+    <input
+      type="text"
+      placeholder="Search Friend"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+    <button className="search-barFriends">Search</button>
+  </div>
 
-      <div className="friends-grid">
-        {filteredFriends.map((friend, idx) => (
-          <div className="friend-card" key={idx}>
-            <img src={friend.avatar} alt="avatar" className="friend-avatar" />
-            <div>{friend.name}</div>
-            <button className="unfriend-btn" onClick={() => handleUnfriend(friend.name)}>
-              Unfriend
-            </button>
-          </div>
-        ))}
+  <div className="friends-grid">
+    {filteredFriends.map((friend, idx) => (
+      <div className="friend-card" key={idx}>
+        <img src={friend.avatar} alt="avatar" className="friend-avatar" />
+        <div>{friend.name}</div>
+        <button className="unfriend-btn" onClick={() => handleUnfriend(friend.name)}>
+          Unfriend
+        </button>
       </div>
+    ))}
+  </div>
+</div>
+
 
       <ToastContainer position="top-right" autoClose={2000} />
     </div>
