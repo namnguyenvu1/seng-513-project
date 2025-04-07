@@ -16,12 +16,20 @@
   }
   
   .rooms-grid {
-    margin-top: 0px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 2px;
-    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column; 
+    gap: 12px;
+    align-items: center; 
   }
+  .room {
+    width: 900px; 
+  }
+  .room:hover {
+    background-color: #ffe0b2; 
+    transform: scale(1.05);   
+  }
+  
   .confirm-buttons{
     color: rgb(8, 8, 8);
     ;
@@ -99,7 +107,7 @@
   
   .room-image {
     width: 100%;
-    max-width: 120px; /* adjust this as needed */
+    max-width: 120px; 
     height: auto;
     object-fit: contain;
     margin-bottom: 10px;
@@ -219,4 +227,22 @@
   }
   
   
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #8b5e3c;
+    padding: 12px;
+    position: relative;
+  }
+  .top-bar h2 {
+    font-size: 1.5rem;
+    color: white;
+    margin: 0 auto;
+  }
+  
+  .profile-wrapper {
+    position: absolute;
+    right: 16px;
+  }
   
