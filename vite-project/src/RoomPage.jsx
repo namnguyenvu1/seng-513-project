@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./RoomPage.css";
+import hamburgerIcon from './assets/hamburgermenu.png';
+import timerIcon from './assets/timer.png';
+import arrowIcon from './assets/arrow.png';
+
 
 function RoomPage() {
   const location = useLocation();
@@ -23,38 +27,25 @@ function RoomPage() {
       <div className="room-header">
         <h2>{room} — {type === "private" ? "Private Room" : "Public Room"}</h2>
         <div className="top-icons">
-          <div className="occupancy">2...</div>
-          <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>☰</div>
+          <img src={timerIcon} alt="Timer" className="timer" onClick={() => setShowTimer(true)} />
+          <img src={hamburgerIcon} alt="Menu" className="hamburger" onClick={() => setMenuOpen(!menuOpen)}/>
         </div>
       </div>
 
       <div className="room-layout">
-        <div className="reminder" onClick={() => navigate("/main")}>
-          📌 Click here to go back to room select
+        <div className="reminder">
+          📌 Click on the door to go back to room select
+          <button className="door-overlay" onClick={() => navigate("/main")}></button>
+
         </div>
 
-        <div className="center-area">
-          <div className="sofa">🛋️</div>
-          <div className="table">📘</div>
-          <div className="rug"></div>
-        </div>
-
-        <div className="walls">
-          <div className="wall-item">🖥️</div>
-          <div className="wall-item">🖼️</div>
-        </div>
-
-        <div className="corners">
-          <div className="plant">🌿</div>
-          <div className="fruit">🍒</div>
-        </div>
       </div>
     
       {menuOpen && (
         <div className="menu-popup">
-            <button onClick={() => { setShowTodo(true); setMenuOpen(false); }}>To-do List</button>
+          <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setMenuOpen(false)}/>
+            <button onClick={() => { setShowTodo(true); setMenuOpen(false); }}>To-Do List</button>
             <button onClick={() => { setShowAI(true); setMenuOpen(false); }}>AI Assistant</button>
-            <button onClick={() => { setShowTimer(true); setMenuOpen(false); }}>Timer</button>
             <button onClick={() => alert("Invite clicked")}>Invite</button>
         </div>
         )}
@@ -126,6 +117,7 @@ function RoomPage() {
 
         {showTimer && (
         <div className="timer-popup">
+          <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setShowTimer(false)}/>
             <h3>Enter Time</h3>
             <div className="time-inputs">
             <input
