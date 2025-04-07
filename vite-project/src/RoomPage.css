@@ -6,7 +6,7 @@
   }
   
   .room-layout {
-    background: #fff;
+    background: #131313;
     margin-top: 20px;
     height: 80%;
     border-radius: 12px;
@@ -16,13 +16,19 @@
   
   .reminder {
     position: absolute;
-    left: 20px;
-    top: 20px;
-    background-color: #ffefc5;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 0.9rem;
+    top: -70px;
+    left: 10px;
+    margin: 0;
+    padding: 8px 12px;
+    background-color: #f4f3ee;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    z-index: 999;
+    font-weight: 500;
+    transition: transform 0.2s ease;
+    color: #000;
   }
+
   
   .menu-popup {
     position: absolute;
@@ -265,4 +271,32 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   }
   
+  .room-layout {
+    background-image: url('./assets/room.jpg');
+    background-size: cover;        
+    background-position: top center; 
+    background-repeat: no-repeat;
+    margin-top: 20px;
+    height: 80%;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .door-overlay {
+    position: absolute;
+    top: 85px;   /* adjust this to align with the door */
+    left: 20px;  /* adjust this based on where the door sits in the image */
+    width: 60px; /* approximate width of the door */
+    height: 100px; /* approximate height of the door */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+  }
+  
+  .door-overlay:hover {
+    outline: 2px dashed rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+  }
   

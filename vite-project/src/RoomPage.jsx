@@ -33,25 +33,12 @@ function RoomPage() {
       </div>
 
       <div className="room-layout">
-        <div className="reminder" onClick={() => navigate("/main")}>
-          📌 Click here to go back to room select
+        <div className="reminder">
+          📌 Click on the door to go back to room select
+          <button className="door-overlay" onClick={() => navigate("/main")}></button>
+
         </div>
 
-        <div className="center-area">
-          <div className="sofa">🛋️</div>
-          <div className="table">📘</div>
-          <div className="rug"></div>
-        </div>
-
-        <div className="walls">
-          <div className="wall-item">🖥️</div>
-          <div className="wall-item">🖼️</div>
-        </div>
-
-        <div className="corners">
-          <div className="plant">🌿</div>
-          <div className="fruit">🍒</div>
-        </div>
       </div>
     
       {menuOpen && (

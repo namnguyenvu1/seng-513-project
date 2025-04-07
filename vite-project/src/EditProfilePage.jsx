@@ -4,21 +4,34 @@ import "./EditProfilePage.css";
 import backArrow from './assets/backbutton.png';
 import logo from './assets/logo.png'; // adjust path if needed
 
-const avatars = [
-  "/avatar1.png",
-  "/avatar2.png",
-  "/avatar3.png"
-]; // placeholder paths for avatar options
+import skin1 from './assets/skin/skin1.png';
+import skin2 from './assets/skin/skin2.png';
+import skin3 from './assets/skin/skin3.png';
+import hair1 from './assets/hair/hair1.png';
+import hair2 from './assets/hair/hair2.png';
+import hair3 from './assets/hair/hair3.png';
+import hair4 from './assets/hair/hair4.png';
+import hair5 from './assets/hair/hair5.png';
+import hair6 from './assets/hair/hair6.png';
+import hair7 from './assets/hair/hair7.png';
+
 
 function EditProfilePage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("User Name");
   const [bio, setBio] = useState("Lorem ipsum dolor sit amet...");
-  const [avatarIndex, setAvatarIndex] = useState(0);
+  
+  const skinTones = [skin1, skin2, skin3];
+  const hairStyles = [hair1, hair2, hair3, hair4, hair5, hair6, hair7];
+  const [skinIndex, setSkinIndex] = useState(0);
+  const [hairIndex, setHairIndex] = useState(0);
 
-  const handleCycleAvatar = () => {
-    setAvatarIndex((prev) => (prev + 1) % avatars.length);
+ const cycleskin = (dir) => {
+    setSkinIndex((prevIndex) => (prevIndex + dir + skinTones.length) % skinTones.length);
   };
+ const cyclehair = (dir) => {
+    setHairIndex((prevIndex) => (prevIndex + dir + hairStyles.length) % hairStyles.length);
+  }
 
   const handleSave = () => {
     // save to backend later
@@ -41,9 +54,26 @@ function EditProfilePage() {
         </div>
 
         <div className="avatar-section">
-          <button className="cycle-btn" onClick={handleCycleAvatar}>↻</button>
-          <img src={avatars[avatarIndex]} alt="Avatar" className="edit-avatar" />
+          <div className="avatar-row">
+            <div className="avatar-stack">
+              <img src={skinTones[skinIndex]} alt="Skin" className="edit-avatar base-layer" />
+              <img src={hairStyles[hairIndex]} alt="Hair" className="edit-avatar overlay" />
+            </div>
+          </div>
+
+          <div className="avatar-control">
+            <button className="cycle-btn" onClick={() => cycleskin(-1)}>⬅</button>
+            <span className="avatar-label">Skin</span>
+            <button className="cycle-btn" onClick={() => cycleskin(1)}>➡</button>
+          </div>
+
+          <div className="avatar-control">
+            <button className="cycle-btn" onClick={() => cyclehair(-1)}>⬅</button>
+            <span className="avatar-label">Hair</span>
+            <button className="cycle-btn" onClick={() => cyclehair(1)}>➡</button>
+          </div>
         </div>
+        
 
         <input
           className="username-input"
@@ -51,7 +81,6 @@ function EditProfilePage() {
           onChange={(e) => setUsername(e.target.value)}
         />
 
-        <h3>About Me:</h3>
         <textarea
           className="bio-input"
           rows="4"
@@ -64,3 +93,6 @@ function EditProfilePage() {
 }
 
 export default EditProfilePage;
+
+
+
