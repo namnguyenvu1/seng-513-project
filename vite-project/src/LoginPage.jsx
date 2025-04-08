@@ -10,7 +10,20 @@ function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    // login logic here
+
+    const res = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (res.ok) {
+      alert("Login successful!");
+      navigate("/main");
+    } else {
+      const msg = await res.text();
+      alert("Login failed: " + msg);
+    }
   };
 
   return (
