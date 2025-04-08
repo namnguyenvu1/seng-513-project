@@ -114,6 +114,16 @@ app.post("/update-profile", (req, res) => {
   );
 });
 
+app.get("/get-profile", (req, res) => {
+  const { email } = req.query;
+
+  db.query("SELECT skin, hair FROM users WHERE email = ?", [email], (err, results) => {
+    if (err) return res.status(500).send("Database error.");
+    if (results.length === 0) return res.status(404).send("User not found.");
+    res.json(results[0]);
+  });
+});
+
 // Start server
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");

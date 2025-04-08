@@ -19,6 +19,7 @@ function LoginPage() {
 
     if (res.ok) {
       alert("Login successful!");
+      localStorage.setItem("userEmail", email); // Save email to localStorage
       navigate("/main");
     } else {
       const msg = await res.text();
