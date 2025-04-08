@@ -95,6 +95,24 @@ app.post("/friends/remove", (req, res) => {
   });
 });
 
+app.post("/update-profile", (req, res) => {
+  const { email, skin, hair } = req.body;
+  
+  db.query(
+      "UPDATE users SET skin = ?, hair = ? WHERE email = ?",
+      [skin, hair, email],
+      (err, result) => {
+          if (err) {
+              console.error("Database error:", err);
+              return res.status(500).send("Database error");
+          }
+          if (result.affectedRows === 0) {
+              return res.status(404).send("User not found");
+          }
+          res.json({ message: "Profile updated successfully" });
+      }
+  );
+});
 
 // Start server
 app.listen(3000, () => {
