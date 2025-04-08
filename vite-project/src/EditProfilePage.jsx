@@ -33,30 +33,10 @@ function EditProfilePage() {
     setHairIndex((prevIndex) => (prevIndex + dir + hairStyles.length) % hairStyles.length);
   }
 
-  const handleSave = async () => {
-    const email = "k@gmail.com"; // Replace with the logged-in user's email
-    const skin = skinTones[skinIndex];
-    const hair = hairStyles[hairIndex];
-  
-    console.log("Sending data:", { email, skin, hair }); // Debug log
-  
-    try {
-      const res = await fetch("http://localhost:3000/update-profile", { // Ensure this URL matches your backend
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, skin, hair }),
-      });
-  
-      if (res.ok) {
-        alert("Changes saved!");
-        navigate("/profile");
-      } else {
-        const msg = await res.text();
-        alert("Failed to save changes: " + msg);
-      }
-    } catch (error) {
-      alert("An error occurred: " + error.message);
-    }
+  const handleSave = () => {
+    // save to backend later
+    alert("Changes saved!");
+    navigate("/profile");
   };
 
   return (
