@@ -2,18 +2,23 @@
 CREATE DATABASE IF NOT EXISTS study_lounge;
 USE study_lounge;
 
--- Create users table with skin and hair columns
+-- Create users table with skin, hair, username, and bio columns
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     skin VARCHAR(255), -- Column to store skin selection
-    hair VARCHAR(255)  -- Column to store hair selection
+    hair VARCHAR(255), -- Column to store hair selection
+    username VARCHAR(255) DEFAULT 'User Name',
+    bio VARCHAR(1000) DEFAULT 'Lorem ipsum dolor sit amet...'
 );
 
--- Insert a sample user
-INSERT INTO users (id, email, password, skin, hair) VALUES
-(1, 'k@gmail.com', '$2b$10$YsV0eLDoyb7154dcSzA3DODuLaxPd5iUCbF9DHF7nov7dYsPmZzTu', NULL, NULL);
+-- Insert sample users (note: change IDs to be unique or let them auto-increment)
+INSERT INTO users (email, password, skin, hair) VALUES
+('k@gmail.com', '$2b$10$YsV0eLDoyb7154dcSzA3DODuLaxPd5iUCbF9DHF7nov7dYsPmZzTu', NULL, NULL),
+('a@gmail.com', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW', NULL, NULL),
+('b@gmail.com', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW', NULL, NULL),
+('c@gmail.com', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW', NULL, NULL);
 
 -- Create friends table with foreign key reference to users
 CREATE TABLE IF NOT EXISTS friends (
