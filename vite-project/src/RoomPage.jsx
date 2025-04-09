@@ -115,39 +115,45 @@ function RoomPage() {
         </div>
         )}
 
-        {showTimer && (
-        <div className="timer-popup">
-          <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setShowTimer(false)}/>
-            <h3>Enter Time</h3>
-            <div className="time-inputs">
-            <input
-                type="number"
-                min="0"
-                max="23"
-                value={timerHour}
-                onChange={(e) => setTimerHour(e.target.value.padStart(2, '0'))}
-            />
-            <span>:</span>
-            <input
-                type="number"
-                min="0"
-                max="59"
-                value={timerMinute}
-                onChange={(e) => setTimerMinute(e.target.value.padStart(2, '0'))}
-            />
-            </div>
-            <div className="timer-buttons">
-            <button className="cancel-btn" onClick={() => setShowTimer(false)}>Cancel</button>
-            <button className="ok-btn" onClick={() => {
-                alert(`Timer set to ${timerHour}:${timerMinute}`);
-                setShowTimer(false);
-            }}>OK</button>
-            </div>
-        </div>
-        )}
+{showTimer && (
+  <div className="timer-popup">
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <h3 style={{ fontWeight: 'bold', textAlign: 'center'}}>Enter Time</h3>
+      <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setShowTimer(false)}/>
+    </div>
 
+    <div className="time-inputs">
+      <input
+        type="number"
+        min="0"
+        max="23"
+        value={timerHour}
+        onChange={(e) => setTimerHour(e.target.value.padStart(2, '0'))}
+      />
+      <span style={{ fontSize: '1.5rem', lineHeight: '40px' }}>:</span>
+      <input
+        type="number"
+        min="0"
+        max="59"
+        value={timerMinute}
+        onChange={(e) => setTimerMinute(e.target.value.padStart(2, '0'))}
+      />
+    </div>
 
+    <div className="timer-labels">
+      <span>Hour</span>
+      <span>Minute</span>
+    </div>
 
+    <div className="timer-buttons">
+      <button className="cancel-btn" onClick={() => setShowTimer(false)}>Cancel</button>
+      <button className="ok-btn" onClick={() => {
+        alert(`Timer set to ${timerHour}:${timerMinute}`);
+        setShowTimer(false);
+      }}>OK</button>
+    </div>
+  </div>
+)}
     </div>
   );
 }
