@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root", // or your MySQL username
-  password: "123456789", // replace with your actual password
+  password: "Funnyman41!", // replace with your actual password
   database: "study_lounge",
 });
 
@@ -95,8 +95,23 @@ app.post("/friends/remove", (req, res) => {
   });
 });
 
+// API route to get UID (id) from the database by email
+app.get('/api/uid/:email', (req, res) => {
+  const { email } = req.params;
+
+  const query = "SELECT id FROM users WHERE email = ?";
+  db.query(query, [email], (err, results) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    if (results.length === 0) return res.status(404).json({ error: "User not found" });
+
+    res.json({ uid: results[0].id });
+  });
+});
+
 
 // Start server
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });
+
+
