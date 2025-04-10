@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root", // or your MySQL username
-  password: "123456789", // replace with your actual password
+  password: "vunamnguyen123", // replace with your actual password
   database: "study_lounge",
 });
 
@@ -95,6 +95,38 @@ app.post("/friends/remove", (req, res) => {
   });
 });
 
+app.post("/update-profile", (req, res) => {
+  const { email, skin, hair, username, bio } = req.body;
+
+  db.query(
+    "UPDATE users SET skin = ?, hair = ?, username = ?, bio = ? WHERE email = ?",
+    [skin, hair, username, bio, email],
+    (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).send("Database error");
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).send("User not found");
+      }
+      res.json({ message: "Profile updated successfully" });
+    }
+  );
+});
+
+app.get("/get-profile", (req, res) => {
+  const { email } = req.query;
+
+  db.query(
+    "SELECT skin, hair, username, bio FROM users WHERE email = ?",
+    [email],
+    (err, results) => {
+      if (err) return res.status(500).send("Database error.");
+      if (results.length === 0) return res.status(404).send("User not found.");
+      res.json(results[0]);
+    }
+  );
+});
 
 // Start server
 app.listen(3000, () => {
