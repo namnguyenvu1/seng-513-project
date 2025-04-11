@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./study-lounge-auth
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=vunamnguyen123
+      - MYSQL_DATABASE=study_lounge
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./vite-project
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: vunamnguyen123
+      MYSQL_DATABASE: study_lounge
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
