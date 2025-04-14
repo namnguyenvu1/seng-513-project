@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./EditProfilePage.css";
 import backArrow from './assets/backbutton.png';
-import logo from './assets/logo.png'; // adjust path if needed
+import logo from './assets/logo.png';
 
 import skin1 from './assets/skin/skin1.png';
 import skin2 from './assets/skin/skin2.png';
@@ -15,36 +15,78 @@ import hair5 from './assets/hair/hair5.png';
 import hair6 from './assets/hair/hair6.png';
 import hair7 from './assets/hair/hair7.png';
 
-
 function EditProfilePage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("User Name");
   const [bio, setBio] = useState("Lorem ipsum dolor sit amet...");
-  
-  const skinTones = [skin1, skin2, skin3];
-  const hairStyles = [hair1, hair2, hair3, hair4, hair5, hair6, hair7];
   const [skinIndex, setSkinIndex] = useState(0);
   const [hairIndex, setHairIndex] = useState(0);
 
- const cycleskin = (dir) => {
+  const skinTones = [skin1, skin2, skin3];
+  const hairStyles = [hair1, hair2, hair3, hair4, hair5, hair6, hair7];
+
+  useEffect(() => {
+    const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage
+    if (!email) {
+      alert("No user logged in!");
+      navigate("/login");
+      return;
+    }
+
+    // Fetch user profile data from the backend
+    fetch(`http://localhost:3000/get-profile?email=${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.skin) {
+          const skinIdx = skinTones.findIndex((skin) => skin.includes(data.skin));
+          if (skinIdx !== -1) setSkinIndex(skinIdx);
+        }
+        if (data.hair) {
+          const hairIdx = hairStyles.findIndex((hair) => hair.includes(data.hair));
+          if (hairIdx !== -1) setHairIndex(hairIdx);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch profile data:", err));
+  }, []);
+
+  const cycleskin = (dir) => {
     setSkinIndex((prevIndex) => (prevIndex + dir + skinTones.length) % skinTones.length);
   };
- const cyclehair = (dir) => {
-    setHairIndex((prevIndex) => (prevIndex + dir + hairStyles.length) % hairStyles.length);
-  }
 
-  const handleSave = () => {
-    // save to backend later
-    alert("Changes saved!");
-    navigate("/profile");
+  const cyclehair = (dir) => {
+    setHairIndex((prevIndex) => (prevIndex + dir + hairStyles.length) % hairStyles.length);
+  };
+
+  const handleSave = async () => {
+    const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage
+    const skin = skinTones[skinIndex];
+    const hair = hairStyles[hairIndex];
+
+    try {
+      const res = await fetch("http://localhost:3000/update-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, skin, hair }),
+      });
+
+      if (res.ok) {
+        alert("Changes saved!");
+        navigate("/profile");
+      } else {
+        const msg = await res.text();
+        alert("Failed to save changes: " + msg);
+      }
+    } catch (error) {
+      alert("An error occurred: " + error.message);
+    }
   };
 
   return (
     <div className="edit-container">
       <div className="edit-header">
-      <img src={logo} alt="Logo" className="header-logo" />
-      <h2>Edit Profile</h2>
-      <img src={backArrow} alt="Go Back" className="exit-btn" onClick={() => navigate("/main")}/>
+        <img src={logo} alt="Logo" className="header-logo" />
+        <h2>Edit Profile</h2>
+        <img src={backArrow} alt="Go Back" className="exit-btn" onClick={() => navigate("/main")} />
       </div>
 
       <div className="edit-card">
@@ -73,7 +115,6 @@ function EditProfilePage() {
             <button className="cycle-btn" onClick={() => cyclehair(1)}>➡</button>
           </div>
         </div>
-        
 
         <input
           className="username-input"
@@ -93,6 +134,3 @@ function EditProfilePage() {
 }
 
 export default EditProfilePage;
-
-
-

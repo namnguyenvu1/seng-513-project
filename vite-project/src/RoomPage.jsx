@@ -63,6 +63,7 @@ function RoomPage() {
     };
   }, [room]);
 
+  
   return (
     <div className="room-container">
       <div className="room-header">
@@ -156,40 +157,6 @@ function RoomPage() {
         </div>
       )}
 
-<<<<<<< HEAD
-      {showTimer && (
-        <div className="timer-popup">
-          <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setShowTimer(false)}/>
-          <h3>Enter Time</h3>
-          <div className="time-inputs">
-            <input
-              type="number"
-              min="0"
-              max="23"
-              value={timerHour}
-              onChange={(e) => setTimerHour(e.target.value.padStart(2, '0'))}
-            />
-            <span>:</span>
-            <input
-              type="number"
-              min="0"
-              max="59"
-              value={timerMinute}
-              onChange={(e) => setTimerMinute(e.target.value.padStart(2, '0'))}
-            />
-          </div>
-          <div className="timer-buttons">
-            <button className="cancel-btn" onClick={() => setShowTimer(false)}>Cancel</button>
-            <button className="ok-btn" onClick={() => {
-              alert(`Timer set to ${timerHour}:${timerMinute}`);
-              setShowTimer(false);
-            }}>OK</button>
-          </div>
-        </div>
-      )}
-
-      <div id="members"></div>
-=======
 {showTimer && (
   <div className="timer-popup">
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -229,7 +196,6 @@ function RoomPage() {
     </div>
   </div>
 )}
->>>>>>> da125b38b627e35e5144646be1c9700876e06953
     </div>
   );
 }
