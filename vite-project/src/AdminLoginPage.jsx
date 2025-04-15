@@ -10,16 +10,21 @@ function AdminLoginPage() {
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
-
+  
     const res = await fetch("http://localhost:3000/admin-login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, password }),
     });
-
+  
     if (res.ok) {
+      const data = await res.json();
       alert("Admin/Staff login successful!");
-      navigate("/admin-dashboard"); // Navigate to admin dashboard (create this page later)
+      if (data.role === "admin") {
+        navigate("/admin-dashboard");
+      } else if (data.role === "staff") {
+        navigate("/staff-dashboard");
+      }
     } else {
       const msg = await res.text();
       alert("Login failed: " + msg);

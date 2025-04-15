@@ -128,6 +128,7 @@ app.get("/get-profile", (req, res) => {
   );
 });
 
+// Admin/Staff Page
 app.post("/admin-login", (req, res) => {
   const { name, password } = req.body;
 
@@ -144,6 +145,88 @@ app.post("/admin-login", (req, res) => {
       res.status(401).send("Incorrect password.");
     }
   });
+});
+
+// Create new admin/staff
+app.post("/create-admin-staff", async (req, res) => {
+  const { name, role, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  db.query(
+    "INSERT INTO administration (name, role, password) VALUES (?, ?, ?)",
+    [name, role, hashedPassword],
+    (err, result) => {
+      if (err) {
+        if (err.code === "ER_DUP_ENTRY") {
+          return res.status(409).send("Name already exists.");
+        }
+        return res.status(500).send("Database error.");
+      }
+      res.status(201).send("Admin/Staff created successfully.");
+    }
+  );
+});
+
+// Search user by email or username
+app.get("/search-user", (req, res) => {
+  const { query } = req.query;
+
+  db.query(
+    "SELECT email, skin, hair, username, bio FROM users WHERE email = ? OR username = ?",
+    [query, query],
+    (err, results) => {
+      if (err) return res.status(500).send("Database error.");
+      if (results.length === 0) return res.status(404).send("User not found.");
+      res.json(results);
+    }
+  );
+});
+
+// Delete user by email
+app.delete("/delete-user", (req, res) => {
+  const { email } = req.body;
+
+  db.query("DELETE FROM users WHERE email = ?", [email], (err, result) => {
+    if (err) return res.status(500).send("Database error.");
+    if (result.affectedRows === 0) return res.status(404).send("User not found.");
+    res.send("User deleted successfully.");
+  });
+});
+
+// Create new user
+app.post("/create-user", async (req, res) => {
+  const { email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  db.query(
+    "INSERT INTO users (email, password) VALUES (?, ?)",
+    [email, hashedPassword],
+    (err, result) => {
+      if (err) {
+        if (err.code === "ER_DUP_ENTRY") {
+          return res.status(409).send("Email already exists.");
+        }
+        return res.status(500).send("Database error.");
+      }
+      res.status(201).send("User created successfully.");
+    }
+  );
+});
+
+// Change user password
+app.post("/change-password", async (req, res) => {
+  const { email, newPassword } = req.body;
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  db.query(
+    "UPDATE users SET password = ? WHERE email = ?",
+    [hashedPassword, email],
+    (err, result) => {
+      if (err) return res.status(500).send("Database error.");
+      if (result.affectedRows === 0) return res.status(404).send("User not found.");
+      res.send("Password updated successfully.");
+    }
+  );
 });
 
 // Start server
