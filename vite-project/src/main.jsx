@@ -12,6 +12,8 @@ import EditProfilePage from "./EditProfilePage";
 import FriendsListPage from "./FriendsListPage";
 import RoomPage from "./RoomPage";
 import AdminLoginPage from "./AdminLoginPage.jsx"; // Import the AdminLoginPage component
+import AdminDashboard from "./AdminDashboard";
+import StaffDashboard from "./StaffDashboard";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -29,6 +31,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/room" element={<RoomPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/admin-login" element={<AdminLoginPage />} /> {/* Add this route */}
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/staff-dashboard" element={<StaffDashboard />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
