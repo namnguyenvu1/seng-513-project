@@ -11,6 +11,8 @@ import ProfilePage from "./ProfilePage";
 import EditProfilePage from "./EditProfilePage";
 import FriendsListPage from "./FriendsListPage";
 import RoomPage from "./RoomPage";
+import AdminLoginPage from "./AdminLoginPage.jsx"; // Import the AdminLoginPage component
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -26,6 +28,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/friends" element={<FriendsListPage />} />
         <Route path="/room" element={<RoomPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/admin-login" element={<AdminLoginPage />} /> {/* Add this route */}
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

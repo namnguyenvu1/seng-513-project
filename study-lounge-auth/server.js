@@ -128,6 +128,24 @@ app.get("/get-profile", (req, res) => {
   );
 });
 
+app.post("/admin-login", (req, res) => {
+  const { name, password } = req.body;
+
+  db.query("SELECT * FROM administration WHERE name = ?", [name], async (err, results) => {
+    if (err) return res.status(500).send("Database error.");
+    if (results.length === 0) return res.status(404).send("Admin/Staff not found.");
+
+    const admin = results[0];
+    const isMatch = await bcrypt.compare(password, admin.password);
+
+    if (isMatch) {
+      res.json({ message: "Login successful", role: admin.role });
+    } else {
+      res.status(401).send("Incorrect password.");
+    }
+  });
+});
+
 // Start server
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
