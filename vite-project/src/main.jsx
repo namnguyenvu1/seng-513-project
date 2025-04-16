@@ -14,6 +14,7 @@ import RoomPage from "./RoomPage";
 import AdminLoginPage from "./AdminLoginPage.jsx"; // Import the AdminLoginPage component
 import AdminDashboard from "./AdminDashboard";
 import StaffDashboard from "./StaffDashboard";
+import ChangeStaffPassword from "./ChangeStaffPassword";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/admin-login" element={<AdminLoginPage />} /> {/* Add this route */}
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
+        <Route path="/change-staff-password" element={<ChangeStaffPassword />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

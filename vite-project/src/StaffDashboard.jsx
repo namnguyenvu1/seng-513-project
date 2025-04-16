@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function StaffDashboard() {
   const [newUser, setNewUser] = useState({ email: "", password: "" });
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleCreateUser = async () => {
     const res = await fetch("http://localhost:3000/create-user", {
@@ -35,6 +37,15 @@ function StaffDashboard() {
 
   return (
     <div>
+      <div style={{ textAlign: "right", marginBottom: "10px" }}>
+        <a
+          href="#"
+          onClick={() => navigate("/change-staff-password")}
+          style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+        >
+          Change Password
+        </a>
+      </div>
       <h1>Staff Dashboard</h1>
 
       <h2>Create User</h2>
