@@ -41,7 +41,13 @@ function ResetPasswordPage() {
       <div className="login-container">
         <form onSubmit={handleReset}>
           <h2>Reset Password</h2>
-          
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <input
             type="password"
             placeholder="New Password"
