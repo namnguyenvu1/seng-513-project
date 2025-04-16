@@ -335,6 +335,25 @@ app.post("/follow-friend", (req, res) => {
   );
 });
 
+app.delete("/unfollow-friend", (req, res) => {
+  const { email, friend_email } = req.body;
+
+  db.query(
+    "DELETE FROM friends WHERE email = ? AND friend_email = ?",
+    [email, friend_email],
+    (err, result) => {
+      if (err) {
+        console.log("Database error:", err); // Log the error
+        return res.status(500).send("Database error.");
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).send("Friend not found.");
+      }
+      res.send("Friend unfollowed successfully.");
+    }
+  );
+});
+
 // Start server
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
