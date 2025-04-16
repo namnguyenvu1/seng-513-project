@@ -20,19 +20,6 @@ INSERT INTO users (email, password, skin, hair) VALUES
 ('b@gmail.com', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW', NULL, NULL),
 ('c@gmail.com', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW', NULL, NULL);
 
--- Create the administration table
-CREATE TABLE IF NOT EXISTS administration (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE,
-    role ENUM('admin', 'staff') NOT NULL,
-    password VARCHAR(255) NOT NULL
-);
-
--- Insert initial admin and staff users
-INSERT INTO administration (name, role, password) VALUES
-('admin', 'admin', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW'), -- Password: 123
-('staff', 'staff', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW'); -- Password: 123
-
 -- Create friends table with foreign key reference to users
 CREATE TABLE IF NOT EXISTS friends (
     id INT AUTO_INCREMENT PRIMARY KEY,

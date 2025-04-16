@@ -8,10 +8,6 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   // login logic here
-  // };
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -59,6 +55,13 @@ function LoginPage() {
           <a href="#" onClick={() => navigate("/signup")} style={{ color: 'red' }}>Sign Up</a>
           <a href="#" onClick={() => navigate("/reset-password")} style={{ color: 'black' }}>Forgot Password</a>
           </div>
+          <button
+            type="button"
+            onClick={() => navigate("/admin-login")}
+            style={{ marginTop: "10px", backgroundColor: "#007BFF", color: "white", padding: "10px", border: "none", borderRadius: "5px", cursor: "pointer" }}
+          >
+            Login as Admin/Staff
+          </button>
         </form>
       </div>
     </div>

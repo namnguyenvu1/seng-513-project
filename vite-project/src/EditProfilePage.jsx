@@ -45,6 +45,8 @@ function EditProfilePage() {
           const hairIdx = hairStyles.findIndex((hair) => hair.includes(data.hair));
           if (hairIdx !== -1) setHairIndex(hairIdx);
         }
+        if (data.username) setUsername(data.username);
+        if (data.bio) setBio(data.bio);
       })
       .catch((err) => console.error("Failed to fetch profile data:", err));
   }, []);
@@ -61,14 +63,14 @@ function EditProfilePage() {
     const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage
     const skin = skinTones[skinIndex];
     const hair = hairStyles[hairIndex];
-
+  
     try {
       const res = await fetch("http://localhost:3000/update-profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, skin, hair }),
+        body: JSON.stringify({ email, skin, hair, username, bio }),
       });
-
+  
       if (res.ok) {
         alert("Changes saved!");
         navigate("/profile");
