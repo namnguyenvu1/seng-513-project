@@ -79,13 +79,13 @@ app.post("/reset-password", async (req, res) => {
     );
   });
   
-
-app.get("/friends", (req, res) => {
-  db.query("SELECT name, avatar FROM friends", (err, results) => {
-    if (err) return res.status(500).send("DB error");
-    res.json(results);
-  });
-});
+// Troublesome code (F*** this part)
+// app.get("/friends", (req, res) => {
+//   db.query("SELECT name, avatar FROM friends", (err, results) => {
+//     if (err) return res.status(500).send("DB error");
+//     res.json(results);
+//   });
+// });
 
 app.post("/friends/remove", (req, res) => {
   const { name } = req.body;
@@ -270,6 +270,69 @@ app.delete("/delete-admin-staff", (req, res) => {
     if (result.affectedRows === 0) return res.status(404).send("Admin/Staff not found.");
     res.send("Admin/Staff deleted successfully.");
   });
+});
+
+// EXPERIMENTAL SECTIONS:
+app.get("/all-users", (req, res) => {
+  const { email } = req.query;
+
+  db.query(
+    `SELECT u.email, u.username, u.skin, u.hair 
+     FROM users u
+     WHERE u.email != ? 
+     AND u.email NOT IN (
+       SELECT f.friend_email 
+       FROM friends f 
+       WHERE f.email = ?
+     )
+     ORDER BY u.username ASC
+     LIMIT 50`,
+    [email, email],
+    (err, results) => {
+      if (err) {
+        console.log("Database error:", err); // Log the error
+        return res.status(500).send("Database error.");
+      }
+      res.json(results);
+    }
+  );
+});
+
+app.get("/friends", (req, res) => {
+  const { email } = req.query;
+
+  db.query(
+    `SELECT u.email, u.username, u.skin, u.hair 
+    FROM users u 
+    INNER JOIN friends f ON u.email = f.friend_email 
+    WHERE f.email = ?`,
+    [email],
+    (err, results) => {
+      if (err) {
+        console.log("Database error:", err); // Log the error
+        return res.status(500).send("Database error.");
+      }
+      res.json(results);
+    }
+  );
+});
+
+app.post("/follow-friend", (req, res) => {
+  const { email, friend_email } = req.body;
+
+  db.query(
+    "INSERT INTO friends (email, friend_email) VALUES (?, ?)",
+    [email, friend_email],
+    (err, result) => {
+      if (err) {
+        if (err.code === "ER_DUP_ENTRY") {
+          return res.status(409).send("Already following this user.");
+        }
+        return res.status(500).send("Database error.");
+      }
+      res.status(201).send("Friend followed successfully.");
+    }
+  );
 });
 
 // Start server
