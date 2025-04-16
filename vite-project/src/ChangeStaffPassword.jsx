@@ -4,22 +4,30 @@ import "./LoginPage.css"; // Reuse the CSS from AdminLoginPage
 import logo from './assets/logo.png';
 
 function ChangeStaffPassword() {
-  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
 
+    // Retrieve staff name from localStorage (or another global state)
+    const staffName = localStorage.getItem("staffName");
+
+    if (!staffName) {
+      alert("Staff not logged in. Please log in again.");
+      navigate("/admin-login");
+      return;
+    }
+
     const res = await fetch("http://localhost:3000/change-staff-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentPassword, newPassword }),
+      body: JSON.stringify({ name: staffName, newStaffPassword: newPassword }),
     });
 
     if (res.ok) {
       alert("Password updated successfully!");
-      navigate("/admin-login"); // Redirect back to admin login after success
+      navigate("/staff-dashboard"); // Redirect back to staff dashboard after success
     } else {
       const msg = await res.text();
       alert("Failed to update password: " + msg);
@@ -38,20 +46,14 @@ function ChangeStaffPassword() {
           <h2>Change Password</h2>
           <input
             type="password"
-            placeholder="Current Password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-          />
-          <input
-            type="password"
             placeholder="New Password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
           <button type="submit">Change Password</button>
           <div className="links">
-            <a href="#" onClick={() => navigate("/admin-login")} style={{ color: 'black' }}>
-              Back to Login
+            <a href="#" onClick={() => navigate("/staff-dashboard")} style={{ color: 'black' }}>
+              Back to Dashboard
             </a>
           </div>
         </form>
