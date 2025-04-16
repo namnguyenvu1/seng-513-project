@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root", // or your MySQL username
-  password: "vunamnguyen123", // replace with your actual password
+  password: "Funnyman41!", // replace with your actual password
   database: "study_lounge",
 });
 
@@ -233,3 +233,5 @@ app.post("/change-password", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });
+
+
