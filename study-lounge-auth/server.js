@@ -3,6 +3,9 @@ const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+require("dotenv").config();
+console.log("GROQ_API_KEY:", process.env.GROQ_API_KEY);
+
 
 const app = express();
 app.use(cors());
@@ -272,7 +275,7 @@ app.delete("/delete-admin-staff", (req, res) => {
   });
 });
 
-// EXPERIMENTAL SECTIONS:
+// EXPERIMENTAL SECTIONS (Mainstream now)
 app.get("/all-users", (req, res) => {
   const { email } = req.query;
 
@@ -352,6 +355,39 @@ app.delete("/unfollow-friend", (req, res) => {
       res.send("Friend unfollowed successfully.");
     }
   );
+});
+
+// EXPERIMENTAL SECTIONS
+// Initialize Groq client
+const { Groq } = require("groq-sdk");
+const groqClient = new Groq({
+  api_key: process.env.GROQ_API_KEY, // Store your API key in an environment variable
+});
+
+app.post("/ai-response", async (req, res) => {
+  const { message } = req.body;
+
+  try {
+    const chatCompletion = await groqClient.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful assistant.",
+        },
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+      model: "llama-3.1-8b-instant", // You can change the model if needed
+    });
+
+    const aiResponse = chatCompletion.choices[0].message.content;
+    res.json({ response: aiResponse });
+  } catch (error) {
+    console.error("Error with Groq API:", error);
+    res.status(500).send("Failed to get AI response.");
+  }
 });
 
 // Start server
