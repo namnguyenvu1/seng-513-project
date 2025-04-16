@@ -43,6 +43,21 @@ function FriendsListPage() {
       .catch(() => toast.error("Failed to follow friend."));
   };
 
+  const handleUnfollow = (friend_email) => {
+    fetch("http://localhost:3000/unfollow-friend", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: currentUserEmail, friend_email }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        setFriends((prev) => prev.filter((f) => f.email !== friend_email));
+        setOtherUsers((prev) => [...prev, friends.find((f) => f.email === friend_email)]);
+        toast.success("Friend unfollowed successfully.");
+      })
+      .catch(() => toast.error("Failed to unfollow friend."));
+  };
+
   const filteredFriends = friends.filter((f) =>
     f.username.toLowerCase().includes(searchFriends.toLowerCase())
   );
@@ -74,6 +89,9 @@ function FriendsListPage() {
             <div className="friend-card" key={idx}>
               <div>{friend.username}</div>
               {/* Add skin and hair display here if available */}
+              <button className="unfollow-btn" onClick={() => handleUnfollow(friend.email)}>
+                Unfollow
+              </button>
             </div>
           ))}
         </div>
