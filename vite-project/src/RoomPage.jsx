@@ -21,6 +21,35 @@ function RoomPage() {
   const [showTimer, setShowTimer] = useState(false);
   const [timerHour, setTimerHour] = useState("00");
   const [timerMinute, setTimerMinute] = useState("00");
+  const [aiResponse, setAiResponse] = useState("");
+  const [chatHistory, setChatHistory] = useState([]); // Add state for chat history
+
+  const handleSendToAI = async () => {
+    if (!aiMessage.trim()) return;
+  
+    try {
+      const res = await fetch("http://localhost:3000/ai-response", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: aiMessage }),
+      });
+  
+      if (res.ok) {
+        const data = await res.json();
+        setChatHistory((prev) => [
+          ...prev,
+          { role: "user", content: aiMessage },
+          { role: "ai", content: data.response },
+        ]);
+        setAiMessage(""); // Clear the input field
+      } else {
+        alert("Failed to get AI response.");
+      }
+    } catch (error) {
+      console.error("Error sending message to AI:", error);
+      alert("An error occurred while communicating with the AI.");
+    }
+  };
   
   return (
     <div className="room-container">
@@ -87,32 +116,32 @@ function RoomPage() {
         </div>
         )}
 
-
         {showAI && (
-        <div className="ai-popup">
+          <div className="ai-popup">
             <div className="ai-header">
-            <button onClick={() => setShowAI(false)}>← return</button>
+              <button onClick={() => setShowAI(false)}>← return</button>
+            </div>
+
+            <div className="ai-chat-history">
+              {chatHistory.map((entry, index) => (
+                <div
+                  key={index}
+                  className={`chat-entry ${entry.role === "user" ? "user-message" : "ai-message"}`}
+                >
+                  <p>{entry.content}</p>
+                </div>
+              ))}
             </div>
 
             <div className="ai-body">
-            <input
-                type="text"
-                placeholder="Message AI"
-                value={aiMessage}
-                onChange={(e) => setAiMessage(e.target.value)}
+            <textarea
+              placeholder="Message AI"
+              value={aiMessage}
+              onChange={(e) => setAiMessage(e.target.value)}
             />
-            <button
-                onClick={() => {
-                if (aiMessage.trim()) {
-                    alert("Sent to AI: " + aiMessage);
-                    setAiMessage("");
-                }
-                }}
-            >
-                Send
-            </button>
+              <button onClick={handleSendToAI}>Send</button>
             </div>
-        </div>
+          </div>
         )}
 
         {showTimer && (
