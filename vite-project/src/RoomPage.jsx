@@ -4,6 +4,7 @@ import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
 import arrowIcon from './assets/arrow.png';
+
 import AgoraRTC from "agora-rtc-sdk-ng";
 
 import skin1 from './assets/skin/skin1.png';
@@ -112,7 +113,27 @@ function RoomPage() {
   };
 
   useEffect(() => {
-    const uid = Math.floor(Math.random() * 10000);
+    const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage
+    if (!email) {
+      alert("No user logged in!");
+      navigate("/login");
+      return;
+    }
+
+    fetch(`http://localhost:3000/get-username?email=${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+      if (data.username) {
+        setUsername(data.username);
+      } else {
+        console.error("Username not found in response");
+      }
+      })
+      .catch((err) => console.error("Failed to fetch username:", err));
+  }, []); 
+
+  useEffect(() => {
+    const uid = Math.floor(Math.random() * 10000);  // change to get from backend
 
     const initAgora = async () => {
       rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
@@ -174,8 +195,10 @@ function RoomPage() {
           left: avatarPosition.left,
         }}
       >
+        <div className="username-display">{username}</div>
         <img src={skinTones[skinIndex]} alt="Skin" className="edit-avatar base-layer" />
         <img src={hairStyles[hairIndex]} alt="Hair" className="edit-avatar overlay" />
+
       </div>
     
       {menuOpen && (

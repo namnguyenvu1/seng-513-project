@@ -336,3 +336,12 @@
     border-radius: 50%;
     border: 2px solid #ccc;
   }
+
+  .username-display {
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+    color: #ffffff;
+    font-weight: bold;
+    transform: translateY(-25px); /* Moves the username up */
+  }
