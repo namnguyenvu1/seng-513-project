@@ -15,7 +15,8 @@ import AdminLoginPage from "./AdminLoginPage.jsx"; // Import the AdminLoginPage 
 import AdminDashboard from "./AdminDashboard";
 import StaffDashboard from "./StaffDashboard";
 import ChangeStaffPassword from "./ChangeStaffPassword";
-
+import AdminProtectedRoute from "./AdminProtectedRoute.jsx"; // Import ProtectedRoute
+import UserProtectedRoute from "./UserProtectedRoute.jsx"; // Import ProtectedRoute
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -25,16 +26,76 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/reset" element={<ResetPasswordPage />} />
-        <Route path="/main" element={<MainPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route
+          path="/main"
+          element={
+            <UserProtectedRoute>
+              <MainPage />
+            </UserProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <UserProtectedRoute>
+              <ProfilePage />
+            </UserProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit-profile"
+          element={
+            <UserProtectedRoute>
+              <EditProfilePage />
+            </UserProtectedRoute>
+          }
+        />
+        <Route
+          path="/friends"
+          element={
+            <UserProtectedRoute>
+              <FriendsListPage />
+            </UserProtectedRoute>
+          }
+        />
+        <Route
+          path="/room"
+          element={
+            <UserProtectedRoute>
+              <RoomPage />
+            </UserProtectedRoute>
+          }
+        />
+        {/* <Route path="/profile" element={<ProfilePage />} />
         <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/friends" element={<FriendsListPage />} />
-        <Route path="/room" element={<RoomPage />} />
+        <Route path="/room" element={<RoomPage />} /> */}
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/admin-login" element={<AdminLoginPage />} /> {/* Add this route */}
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/staff-dashboard" element={<StaffDashboard />} />
-        <Route path="/change-staff-password" element={<ChangeStaffPassword />} />
+        <Route
+          path="/admin-dashboard"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboard />
+            </AdminProtectedRoute>
+          }
+        />
+        <Route
+          path="/staff-dashboard"
+          element={
+            <AdminProtectedRoute>
+              <StaffDashboard />
+            </AdminProtectedRoute>
+          }
+        />
+        <Route
+          path="/change-staff-password"
+          element={
+            <AdminProtectedRoute>
+              <ChangeStaffPassword />
+            </AdminProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
   const [query, setQuery] = useState("");
@@ -8,7 +9,13 @@ function AdminDashboard() {
   const [adminToChangePassword, setAdminToChangePassword] = useState(""); // For changing password
   const [staffToChangePassword, setStaffToChangePassword] = useState(""); // For changing staff password
   const [newAdminPassword, setNewAdminPassword] = useState(""); // New password for admin
-  const [newStaffPassword, setNewStaffPassword] = useState(""); // New password for admin
+  const [newStaffPassword, setNewStaffPassword] = useState(""); // New password for staff
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("staffName"); // Clear session data
+    navigate("/admin-login"); // Redirect to login page
+  };
 
   const handleSearch = async () => {
     const res = await fetch(`http://localhost:3000/search-user?query=${query}`);
@@ -78,6 +85,11 @@ function AdminDashboard() {
 
   return (
     <div>
+      <div style={{ textAlign: "right", marginBottom: "10px" }}>
+        <button onClick={handleLogout} style={{ color: "red", cursor: "pointer" }}>
+          Logout
+        </button>
+      </div>
       <h1>Admin Dashboard</h1>
 
       <h2>Create Admin/Staff</h2>

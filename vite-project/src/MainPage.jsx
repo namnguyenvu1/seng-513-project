@@ -27,6 +27,7 @@ function MainPage() {
 
   const confirmSignOut = () => {
     setShowConfirm(false);
+    localStorage.removeItem("userEmail"); // So that when logout, the login infor will be clear
     navigate("/login");
   };
 

@@ -7,6 +7,11 @@ function StaffDashboard() {
   const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem("staffName"); // Clear session data
+    navigate("/admin-login"); // Redirect to login page
+  };
+
   const handleCreateUser = async () => {
     const res = await fetch("http://localhost:3000/create-user", {
       method: "POST",
@@ -46,6 +51,14 @@ function StaffDashboard() {
           Change Password
         </a>
       </div>
+
+      <div style={{ textAlign: "right", marginBottom: "10px" }}>
+        <button onClick={handleLogout} style={{ color: "red", cursor: "pointer" }}>
+          Logout
+        </button>
+      </div>
+
+
       <h1>Staff Dashboard</h1>
 
       <h2>Create User</h2>
