@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root", // or your MySQL username
-  password: "Funnyman41!", // replace with your actual password
+  password: "vunamnguyen123", // replace with your actual password
   database: "study_lounge",
 });
 
@@ -229,9 +229,50 @@ app.post("/change-password", async (req, res) => {
   );
 });
 
+// Change staff password
+app.post("/change-staff-password", async (req, res) => {
+  const { name, newStaffPassword } = req.body;
+  const hashedPassword = await bcrypt.hash(newStaffPassword, 10);
+
+  db.query(
+    "UPDATE administration SET password = ? WHERE name = ? AND role = 'staff'",
+    [hashedPassword, name],
+    (err, result) => {
+      if (err) return res.status(500).send("Database error.");
+      if (result.affectedRows === 0) return res.status(404).send("Staff not found.");
+      res.send("Password updated successfully.");
+    }
+  );
+});
+
+// Change admin's password
+app.post("/change-admin-password", async (req, res) => {
+  const { name, newAdminPassword } = req.body;
+  const hashedPassword = await bcrypt.hash(newAdminPassword, 10);
+
+  db.query(
+    "UPDATE administration SET password = ? WHERE name = ? AND role = 'admin'",
+    [hashedPassword, name],
+    (err, result) => {
+      if (err) return res.status(500).send("Database error.");
+      if (result.affectedRows === 0) return res.status(404).send("Admin not found.");
+      res.send("Password updated successfully.");
+    }
+  );
+});
+
+// Delete admin/staff
+app.delete("/delete-admin-staff", (req, res) => {
+  const { name } = req.body;
+
+  db.query("DELETE FROM administration WHERE name = ?", [name], (err, result) => {
+    if (err) return res.status(500).send("Database error.");
+    if (result.affectedRows === 0) return res.status(404).send("Admin/Staff not found.");
+    res.send("Admin/Staff deleted successfully.");
+  });
+});
+
 // Start server
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });
-
-

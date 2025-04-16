@@ -4,6 +4,11 @@ function AdminDashboard() {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [newAdmin, setNewAdmin] = useState({ name: "", role: "admin", password: "" });
+  const [adminToDelete, setAdminToDelete] = useState(""); // For deleting admin/staff
+  const [adminToChangePassword, setAdminToChangePassword] = useState(""); // For changing password
+  const [staffToChangePassword, setStaffToChangePassword] = useState(""); // For changing staff password
+  const [newAdminPassword, setNewAdminPassword] = useState(""); // New password for admin
+  const [newStaffPassword, setNewStaffPassword] = useState(""); // New password for admin
 
   const handleSearch = async () => {
     const res = await fetch(`http://localhost:3000/search-user?query=${query}`);
@@ -29,17 +34,45 @@ function AdminDashboard() {
     }
   };
 
-  const handleDeleteUser = async (email) => {
-    const res = await fetch("http://localhost:3000/delete-user", {
+  const handleDeleteAdminStaff = async () => {
+    const res = await fetch("http://localhost:3000/delete-admin-staff", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ name: adminToDelete }),
     });
 
     if (res.ok) {
-      alert("User deleted successfully.");
+      alert("Admin/Staff deleted successfully.");
     } else {
-      alert("Failed to delete user.");
+      alert("Failed to delete Admin/Staff.");
+    }
+  };
+
+  const handleChangeStaffPassword = async () => {
+    const res = await fetch("http://localhost:3000/change-staff-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: staffToChangePassword, newStaffPassword }),
+    });
+
+    if (res.ok) {
+      alert("Staff password updated successfully.");
+    } else {
+      alert("Failed to update staff password.");
+    }
+  };
+
+  const handleChangeAdminPassword = async () => {
+    const res = await fetch("http://localhost:3000/change-admin-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: adminToChangePassword, newAdminPassword }),
+    });
+
+    if (res.ok) {
+      alert("Admin password updated successfully.");
+    } else {
+      alert("Failed to update admin password.");
     }
   };
 
@@ -68,6 +101,45 @@ function AdminDashboard() {
         onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
       />
       <button onClick={handleCreateAdminStaff}>Create</button>
+
+      <h2>Delete Admin/Staff</h2>
+      <input
+        type="text"
+        placeholder="Name"
+        value={adminToDelete}
+        onChange={(e) => setAdminToDelete(e.target.value)}
+      />
+      <button onClick={handleDeleteAdminStaff}>Delete</button>
+
+      <h2>Change Admin Password</h2>
+      <input
+        type="text"
+        placeholder="Admin Name"
+        value={adminToChangePassword}
+        onChange={(e) => setAdminToChangePassword(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="New Password"
+        value={newAdminPassword}
+        onChange={(e) => setNewAdminPassword(e.target.value)}
+      />
+      <button onClick={handleChangeAdminPassword}>Change Admin Password</button>
+
+      <h2>Change Staff Password</h2>
+      <input
+        type="text"
+        placeholder="Staff Name"
+        value={staffToChangePassword}
+        onChange={(e) => setStaffToChangePassword(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="New Password"
+        value={newStaffPassword}
+        onChange={(e) => setNewStaffPassword(e.target.value)}
+      />
+      <button onClick={handleChangeStaffPassword}>Change Staff Password</button>
 
       <h2>Search User</h2>
       <input
