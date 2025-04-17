@@ -83,21 +83,28 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     z-index: 20;
   }
+
+  .return-button-container {
+    position: absolute;
+    top: -8px;
+    left: 8px;
+    z-index: 21;
+  }
   
   .todo-header {
-    display: flex;
+    /* display: flex; */
     justify-content: space-between;
     align-items: center;
   }
   
   .todo-input {
     margin-top: 12px;
-    display: flex;
+    /* display: flex; */
     gap: 8px;
   }
   
   .todo-input input {
-    flex: 1;
+    /* flex: 1; */
     padding: 6px;
     border: 1px solid #ccc;
     border-radius: 6px;

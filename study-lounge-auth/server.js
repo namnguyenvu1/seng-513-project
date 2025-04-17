@@ -357,7 +357,7 @@ app.delete("/unfollow-friend", (req, res) => {
   );
 });
 
-// EXPERIMENTAL SECTIONS
+// EXPERIMENTAL SECTIONS (AI) (Mainstream now)
 // Initialize Groq client
 const { Groq } = require("groq-sdk");
 const groqClient = new Groq({
@@ -388,6 +388,46 @@ app.post("/ai-response", async (req, res) => {
     console.error("Error with Groq API:", error);
     res.status(500).send("Failed to get AI response.");
   }
+});
+
+// EXPERIMENTAL SECTIONS 3
+// Get all to-do items for a user
+app.get("/todo", (req, res) => {
+  const { email } = req.query;
+
+  db.query(
+    "SELECT id, note FROM todo_list WHERE user_email = ?",
+    [email],
+    (err, results) => {
+      if (err) return res.status(500).send("Database error.");
+      res.json(results);
+    }
+  );
+});
+
+// Add a new to-do item
+app.post("/todo", (req, res) => {
+  const { email, note } = req.body;
+
+  db.query(
+    "INSERT INTO todo_list (user_email, note) VALUES (?, ?)",
+    [email, note],
+    (err, result) => {
+      if (err) return res.status(500).send("Database error.");
+      res.status(201).json({ id: result.insertId }); // Return the new task's ID
+    }
+  );
+});
+
+// Delete a to-do item
+app.delete("/todo", (req, res) => {
+  const { id } = req.body;
+
+  db.query("DELETE FROM todo_list WHERE id = ?", [id], (err, result) => {
+    if (err) return res.status(500).send("Database error.");
+    if (result.affectedRows === 0) return res.status(404).send("To-do item not found.");
+    res.send("To-do item deleted successfully.");
+  });
 });
 
 // Start server
