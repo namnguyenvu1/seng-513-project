@@ -4,6 +4,7 @@ import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
 import arrowIcon from './assets/arrow.png';
+import { useEffect } from "react";
 
 
 function RoomPage() {
@@ -50,6 +51,27 @@ function RoomPage() {
       alert("An error occurred while communicating with the AI.");
     }
   };
+
+  useEffect(() => {
+    const fetchTodoList = async () => {
+      const email = localStorage.getItem("userEmail");
+      if (!email) return;
+  
+      try {
+        const res = await fetch(`http://localhost:3000/todo?email=${email}`);
+        if (res.ok) {
+          const data = await res.json();
+          setTodoList(data.map((item) => ({ id: item.id, note: item.note })));
+        } else {
+          console.error("Failed to fetch to-do list.");
+        }
+      } catch (error) {
+        console.error("Error fetching to-do list:", error);
+      }
+    };
+  
+    fetchTodoList();
+  }, []);
   
   return (
     <div className="room-container">
@@ -82,8 +104,10 @@ function RoomPage() {
         {showTodo && (
         <div className="todo-popup">
             <div className="todo-header">
+            <div className="return-button-container">
+                <button onClick={() => setShowTodo(false)}>Return</button>
+            </div>
             <h3>To-Do List</h3>
-            <button onClick={() => setShowTodo(false)}>Return</button>
             </div>
 
             <div className="todo-input">
@@ -93,25 +117,66 @@ function RoomPage() {
                 value={todoInput}
                 onChange={(e) => setTodoInput(e.target.value)}
             />
-            <button onClick={() => {
+            
+            <button
+              onClick={async () => {
                 if (todoInput.trim()) {
-                setTodoList([...todoList, todoInput.trim()]);
-                setTodoInput("");
+                  const email = localStorage.getItem("userEmail");
+                  if (!email) return alert("User not logged in.");
+
+                  try {
+                    const res = await fetch("http://localhost:3000/todo", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ email, note: todoInput.trim() }),
+                    });
+
+                    if (res.ok) {
+                      const newTodo = await res.json(); // Ensure the backend returns the new task with its ID
+                      setTodoList((prev) => [...prev, { id: newTodo.id, note: todoInput.trim() }]);
+                      setTodoInput(""); // Clear the input field after adding
+                    } else {
+                      alert("Failed to add to-do item.");
+                    }
+                  } catch (error) {
+                    console.error("Error adding to-do item:", error);
+                  }
                 }
-            }}>Add</button>
+              }}
+            >
+              Add
+            </button>
+            
             </div>
 
             <ul className="todo-list">
-            {todoList.map((task, index) => (
-                <li key={index}>
-                {task}
-                <button className="remove-task" onClick={() => {
-                    const updated = [...todoList];
-                    updated.splice(index, 1);
-                    setTodoList(updated);
-                }}>x</button>
+              {todoList.map((task, index) => (
+                <li key={task.id}>
+                  {task.note}
+                  <button
+                    className="remove-task"
+                    onClick={async () => {
+                      try {
+                        const res = await fetch("http://localhost:3000/todo", {
+                          method: "DELETE",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ id: task.id }),
+                        });
+
+                        if (res.ok) {
+                          setTodoList((prev) => prev.filter((t) => t.id !== task.id)); // Filter by ID
+                        } else {
+                          alert("Failed to delete to-do item.");
+                        }
+                      } catch (error) {
+                        console.error("Error deleting to-do item:", error);
+                      }
+                    }}
+                  >
+                    x
+                  </button>
                 </li>
-            ))}
+              ))}
             </ul>
         </div>
         )}
