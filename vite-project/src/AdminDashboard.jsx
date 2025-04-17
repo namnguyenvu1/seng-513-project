@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
@@ -11,13 +11,32 @@ function AdminDashboard() {
   const [newAdminPassword, setNewAdminPassword] = useState("");
   const [newStaffPassword, setNewStaffPassword] = useState("");
 
-  const [showCreateSection, setShowCreateSection] = useState(true);
+  const [showCreateSection, setShowCreateSection] = useState(false);
   const [showDeleteSection, setShowDeleteSection] = useState(false);
   const [showAdminPwdSection, setShowAdminPwdSection] = useState(false);
   const [showStaffPwdSection, setShowStaffPwdSection] = useState(false);
   const [showSearchSection, setShowSearchSection] = useState(false);
 
+  const [userCount, setUserCount] = useState(0); // State to store user count
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/user-count");
+        if (res.ok) {
+          const data = await res.json();
+          setUserCount(data.userCount);
+        } else {
+          console.error("Failed to fetch user count.");
+        }
+      } catch (error) {
+        console.error("Error fetching user count:", error);
+      }
+    };
+
+    fetchUserCount();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("staffName");
@@ -43,6 +62,7 @@ function AdminDashboard() {
 
     if (res.ok) {
       alert("Admin/Staff created successfully.");
+      setNewAdmin({ name: "", role: "admin", password: "" }); // Clear fields
     } else {
       alert("Failed to create Admin/Staff.");
     }
@@ -57,6 +77,7 @@ function AdminDashboard() {
 
     if (res.ok) {
       alert("Admin/Staff deleted successfully.");
+      setAdminToDelete(""); // Clear input
     } else {
       alert("Failed to delete Admin/Staff.");
     }
@@ -71,6 +92,8 @@ function AdminDashboard() {
 
     if (res.ok) {
       alert("Staff password updated successfully.");
+      setStaffToChangePassword("");
+      setNewStaffPassword(""); // Clear input
     } else {
       alert("Failed to update staff password.");
     }
@@ -85,6 +108,8 @@ function AdminDashboard() {
 
     if (res.ok) {
       alert("Admin password updated successfully.");
+      setAdminToChangePassword("");
+      setNewAdminPassword(""); // Clear input
     } else {
       alert("Failed to update admin password.");
     }
@@ -113,6 +138,11 @@ function AdminDashboard() {
         </button>
       </div>
       <h1>Admin Dashboard</h1>
+
+      {/* Display the user count */}
+      <div style={{ marginBottom: "20px" }}>
+        <h2>Total Users: {userCount}</h2>
+      </div>
 
       <h2
         onClick={() => setShowCreateSection(!showCreateSection)}
