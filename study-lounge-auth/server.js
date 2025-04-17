@@ -390,7 +390,7 @@ app.post("/ai-response", async (req, res) => {
   }
 });
 
-// EXPERIMENTAL SECTIONS 3
+// EXPERIMENTAL SECTIONS 3 (Mainstream now)
 // Get all to-do items for a user
 app.get("/todo", (req, res) => {
   const { email } = req.query;
@@ -427,6 +427,15 @@ app.delete("/todo", (req, res) => {
     if (err) return res.status(500).send("Database error.");
     if (result.affectedRows === 0) return res.status(404).send("To-do item not found.");
     res.send("To-do item deleted successfully.");
+  });
+});
+
+// EXPERIMENTAL SECTIONS 4
+// Get the total number of users
+app.get("/user-count", (req, res) => {
+  db.query("SELECT COUNT(*) AS userCount FROM users", (err, results) => {
+    if (err) return res.status(500).send("Database error.");
+    res.json({ userCount: results[0].userCount });
   });
 });
 

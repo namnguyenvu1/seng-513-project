@@ -7,6 +7,10 @@ function StaffDashboard() {
   const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
 
+  // Collapse control states
+  const [showCreateUserSection, setShowCreateUserSection] = useState(false);
+  const [showChangePasswordSection, setShowChangePasswordSection] = useState(false);
+
   const handleLogout = () => {
     localStorage.removeItem("staffName"); // Clear session data
     navigate("/admin-login"); // Redirect to login page
@@ -21,6 +25,7 @@ function StaffDashboard() {
 
     if (res.ok) {
       alert("User created successfully.");
+      setNewUser({ email: "", password: "" });
     } else {
       alert("Failed to create user.");
     }
@@ -38,6 +43,8 @@ function StaffDashboard() {
     } else {
       alert("Failed to update password.");
     }
+    setEmail("");
+    setNewPassword("");
   };
 
   return (
@@ -61,35 +68,54 @@ function StaffDashboard() {
 
       <h1>Staff Dashboard</h1>
 
-      <h2>Create User</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={newUser.email}
-        onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={newUser.password}
-        onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-      />
-      <button onClick={handleCreateUser}>Create</button>
+      {/* Toggle header */}
+      <h2
+        onClick={() => setShowCreateUserSection((prev) => !prev)}
+        style={{ cursor: "pointer", color: "blue"}}
+      >
+        {showCreateUserSection ? "▼" : "▶"} Create User
+      </h2>
+      {showCreateUserSection && (
+        <div>
+          <input
+            type="email"
+            placeholder="Email"
+            value={newUser.email}
+            onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={newUser.password}
+            onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+          />
+          <button onClick={handleCreateUser}>Create</button>
+        </div>
+      )}
 
-      <h2>Change User Password</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="New Password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-      />
-      <button onClick={handleChangePassword}>Change Password</button>
+      <h2
+        onClick={() => setShowChangePasswordSection((prev) => !prev)}
+        style={{ cursor: "pointer", color: "blue"}}
+      >
+        {showChangePasswordSection ? "▼" : "▶"} Change User Password
+      </h2>
+      {showChangePasswordSection && (
+        <div>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <button onClick={handleChangePassword}>Change Password</button>
+        </div>
+      )}
     </div>
   );
 }
