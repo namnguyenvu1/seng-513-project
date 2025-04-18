@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
 import arrowIcon from './assets/arrow.png';
-import { useEffect } from "react";
 
+import AgoraRTC from "agora-rtc-sdk-ng";
+
+import skin1 from './assets/skin/skin1.png';
+import skin2 from './assets/skin/skin2.png';
+import skin3 from './assets/skin/skin3.png';
+import hair1 from './assets/hair/hair1.png';
+import hair2 from './assets/hair/hair2.png';
+import hair3 from './assets/hair/hair3.png';
+import hair4 from './assets/hair/hair4.png';
+import hair5 from './assets/hair/hair5.png';
+import hair6 from './assets/hair/hair6.png';
+import hair7 from './assets/hair/hair7.png';
 
 function RoomPage() {
   const location = useLocation();
@@ -24,6 +35,137 @@ function RoomPage() {
   const [timerMinute, setTimerMinute] = useState("00");
   const [aiResponse, setAiResponse] = useState("");
   const [chatHistory, setChatHistory] = useState([]); // Add state for chat history
+
+  const [avatarPosition, setAvatarPosition] = useState({ top: 100, left: 100 }); // Initial position
+ 
+  // States for user profile
+  const [skinIndex, setSkinIndex] = useState(0);
+  const [hairIndex, setHairIndex] = useState(0);
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+
+  const skinTones = [skin1, skin2, skin3];
+  const hairStyles = [hair1, hair2, hair3, hair4, hair5, hair6, hair7];
+
+  // Fetch user profile data
+  useEffect(() => {
+    const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage
+    if (!email) {
+      alert("No user logged in!");
+      navigate("/login");
+      return;
+    }
+
+    // Fetch user profile data from the backend
+    fetch(`http://localhost:3000/get-profile?email=${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.skin) {
+          const skinIdx = skinTones.findIndex((skin) => skin.includes(data.skin));
+          if (skinIdx !== -1) setSkinIndex(skinIdx);
+        }
+        if (data.hair) {
+          const hairIdx = hairStyles.findIndex((hair) => hair.includes(data.hair));
+          if (hairIdx !== -1) setHairIndex(hairIdx);
+        }
+        if (data.username) setUsername(data.username);
+        if (data.bio) setBio(data.bio);
+      })
+      .catch((err) => console.error("Failed to fetch profile data:", err));
+  }, []);
+
+    // Handle keyboard movement
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const step = 15; // Movement step size
+      const roomContainer = document.querySelector(".room-container");
+      const containerRect = roomContainer.getBoundingClientRect();
+
+      setAvatarPosition((prevPosition) => {
+        let newTop = prevPosition.top;
+        let newLeft = prevPosition.left;
+
+        if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
+          newTop = Math.max(0, prevPosition.top - step);
+        } else if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
+          newTop = Math.min(containerRect.height - 100, prevPosition.top + step); // 100 is avatar height
+        } else if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
+          newLeft = Math.max(0, prevPosition.left - step);
+        } else if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
+          newLeft = Math.min(containerRect.width - 100, prevPosition.left + step); // 100 is avatar width
+        }
+
+        return { top: newTop, left: newLeft };
+      });
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  // Agora setup
+  const appId = "555ddb47a67643abbf6e20f62f0e59fa";
+  const token = null; // Add your token here if needed
+  const rtc = {
+    client: null,
+    localAudioTrack: null,
+  };
+
+  useEffect(() => {
+    const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage
+    if (!email) {
+      alert("No user logged in!");
+      navigate("/login");
+      return;
+    }
+
+    fetch(`http://localhost:3000/get-username?email=${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+      if (data.username) {
+        setUsername(data.username);
+      } else {
+        console.error("Username not found in response");
+      }
+      })
+      .catch((err) => console.error("Failed to fetch username:", err));
+  }, []); 
+
+  useEffect(() => {
+    const uid = Math.floor(Math.random() * 10000);  // change to get from backend
+
+    const initAgora = async () => {
+      rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+
+      rtc.client.on("user-published", async (user, mediaType) => {
+        await rtc.client.subscribe(user, mediaType);
+        if (mediaType === "audio") {
+          user.audioTrack.play();
+        }
+      });
+
+      rtc.client.on("user-left", (user) => {
+        console.log("User left the voice chat:", user.uid);
+      });
+
+      await rtc.client.join(appId, room, token, uid);
+      rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+      await rtc.client.publish([rtc.localAudioTrack]);
+
+      console.log(`Joined room "${room}" as UID ${uid}`);
+    };
+
+    initAgora();
+
+    return () => {
+      rtc.localAudioTrack?.stop();
+      rtc.localAudioTrack?.close();
+      rtc.client?.leave();
+    };
+  }, [room]);
 
   const handleSendToAI = async () => {
     if (!aiMessage.trim()) return;
@@ -87,8 +229,24 @@ function RoomPage() {
         <div className="reminder">
           📌 Click on the door to go back to room select
           <button className="door-overlay" onClick={() => navigate("/main")}></button>
-
         </div>
+        <div className="voice-status">
+          🔊 Voice chat active in: <strong>{room}</strong>
+        </div>
+      </div>
+
+      {/* Movable User Avatar */}
+      <div
+        className="avatar-stack"
+        style={{
+          position: "absolute",
+          top: avatarPosition.top,
+          left: avatarPosition.left,
+        }}
+      >
+        <div className="username-display">{username}</div>
+        <img src={skinTones[skinIndex]} alt="Skin" className="edit-avatar base-layer" />
+        <img src={hairStyles[hairIndex]} alt="Hair" className="edit-avatar overlay" />
 
       </div>
     
