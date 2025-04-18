@@ -1,317 +1,333 @@
 .room-container {
-    background-color: #f3ad62;
-    height: 100vh;
-    padding: 20px;
-    position: relative;
-  }
-  
-  .room-layout {
-    background: #131313;
-    margin-top: 20px;
-    height: 80%;
-    border-radius: 12px;
-    padding: 20px;
-    position: relative;
-  }
-  
-  .reminder {
-    position: absolute;
-    top: -70px;
-    left: 10px;
-    margin: 0;
-    padding: 8px 12px;
-    background-color: #f4f3ee;
-    border-radius: 10px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    z-index: 999;
-    font-weight: 500;
-    transition: transform 0.2s ease;
-    color: #000;
-  }
+  background-color: #f3ad62;
+  height: 100vh;
+  padding: 20px;
+  position: relative;
+}
 
-  
-  .menu-popup {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #a4835c;
-    border: 3px solid #eea94d;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    z-index: 10;
-    width: 220px;
-  }
-  
-  .menu-popup button {
-    background-color: #a4835c;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 1rem;
-    cursor: pointer;
-    text-align: center;
-    font-style: normal;
-  }
+.room-layout {
+  background: #131313;
+  margin-top: 20px;
+  height: 80%;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+}
 
-  .menu-popup button:not(:last-child) {
-    border-bottom: 2px solid #e9c7a2; /* separator line */
-  }
+.reminder {
+  position: absolute;
+  top: -70px;
+  left: 10px;
+  margin: 0;
+  padding: 8px 12px;
+  background-color: #f4f3ee;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  z-index: 999;
+  font-weight: 500;
+  transition: transform 0.2s ease;
+  color: #000;
+}
 
-  .menu-popup button:first-of-type {
-    margin-top: 25px; /* adds spacing below the arrow */
-  }
-  
-  .menu-popup button:hover {
-    background-color: #e07b39;
-  }
-  
-  .todo-popup {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 280px;
-    background: #fff;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-    z-index: 20;
-  }
 
-  .return-button-container {
-    position: absolute;
-    top: -8px;
-    left: 8px;
-    z-index: 21;
-  }
-  
-  .todo-header {
-    /* display: flex; */
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .todo-input {
-    margin-top: 12px;
-    /* display: flex; */
-    gap: 8px;
-  }
-  
-  .todo-input input {
-    /* flex: 1; */
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  
-  .todo-input button {
-    background-color: #f4a261;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 10px;
-    cursor: pointer;
-  }
-  
-  .todo-list {
-    list-style: none;
-    padding: 0;
-    margin-top: 12px;
-    max-height: 180px;
-    overflow-y: auto;
-  }
-  
-  .todo-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 4px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .remove-task {
-    background: none;
-    border: none;
-    color: red;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .ai-popup {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    background-color: #a1724f;
-    color: white;
-    border-radius: 14px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-    z-index: 30;
-  }
-  
-  .ai-header {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .ai-header button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  .ai-body {
-    display: flex;
-    flex-direction: column; /* Stack vertically */
-    gap: 10px;               /* Spacing between textarea and button */
-  }
-  
-  .ai-body textarea {
-    resize: vertical;        /* Allow vertical resizing */
-    padding: 10px;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    min-height: 60px;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  
-  .ai-body button {
-    background-color: #f4a261;
-    border: none;
-    color: white;
-    padding: 10px;
-    border-radius: 12px;
-    font-size: 1rem;
-    cursor: pointer;
-    align-self: flex-end;    /* Aligns button to the right */
-  }  
-  
-  .timer-popup {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #a4835c;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    text-align: center;
-    z-index: 25;
-  }
-  
-  .time-inputs {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    font-size: 1.5rem;
-    margin-bottom: 16px;
-  }
-  
-  .time-inputs input {
-    width: 50px;
-    font-size: 1.2rem;
-    text-align: center;
-    padding: 6px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
+.menu-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #a4835c;
+  border: 3px solid #eea94d;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  z-index: 10;
+  width: 220px;
+}
 
-  .time-inputs span {
-    line-height: 1;
-    display: flex;
-    align-items: center; /* align colon vertically */
-    justify-content: center;
-    font-size: 2rem; /* match input font size if needed */
-    padding-bottom: 4px; /* optional: tweak if still a bit off */
-  }
-  
-  .timer-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  
-  .cancel-btn, .ok-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  .cancel-btn {
-    background: #ccc;
-    color: #000;
-  }
-  
-  .ok-btn {
-    background: #42b983;
-    color: white;
-  }
+.menu-popup button {
+  background-color: #a4835c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  font-style: normal;
+}
 
-  .top-icons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 5;
-  }
-  
-  .top-icons img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    cursor: pointer;
-    border-radius: 50%;
-    background-color: white;
-    padding: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  }
-  
-  .room-layout {
-    background-image: url('./assets/room.jpg');
-    background-size: cover;        
-    background-position: top center; 
-    background-repeat: no-repeat;
-    margin-top: 20px;
-    height: 80%;
-    border-radius: 12px;
-    padding: 20px;
-    position: relative;
-  }
-  
-  .door-overlay {
-    position: absolute;
-    top: 85px;   /* adjust this to align with the door */
-    left: 20px;  /* adjust this based on where the door sits in the image */
-    width: 60px; /* approximate width of the door */
-    height: 100px; /* approximate height of the door */
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 10;
-  }
-  
-  .door-overlay:hover {
-    outline: 2px dashed rgba(255, 255, 255, 0.6);
-    border-radius: 8px;
-  }
-  
+.menu-popup button:not(:last-child) {
+  border-bottom: 2px solid #e9c7a2; /* separator line */
+}
+
+.menu-popup button:first-of-type {
+  margin-top: 25px; /* adds spacing below the arrow */
+}
+
+.menu-popup button:hover {
+  background-color: #e07b39;
+}
+
+.todo-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  z-index: 20;
+}
+
+.return-button-container {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  z-index: 21;
+}
+
+.todo-header {
+  /* display: flex; */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todo-input {
+  margin-top: 12px;
+  /* display: flex; */
+  gap: 8px;
+}
+
+.todo-input input {
+  /* flex: 1; */
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.todo-input button {
+  background-color: #f4a261;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 12px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.todo-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 4px;
+  border-bottom: 1px solid #ddd;
+}
+
+.remove-task {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.ai-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  background-color: #a1724f;
+  color: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  z-index: 30;
+}
+
+.ai-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ai-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.ai-body {
+  display: flex;
+  flex-direction: column; /* Stack vertically */
+  gap: 10px;               /* Spacing between textarea and button */
+}
+
+.ai-body textarea {
+  resize: vertical;        /* Allow vertical resizing */
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  min-height: 60px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.ai-body button {
+  background-color: #f4a261;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: flex-end;    /* Aligns button to the right */
+}  
+
+.timer-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #a47d52;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  z-index: 25;
+  width: 280px;
+  color: white;
+}
+
+.timer-popup h3 {
+  margin: 2;
+text-align: center;
+width: 100%;
+font-size: 1.3rem;
+font-weight: bold;
+color: white;
+}
+
+.time-inputs {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.time-inputs input {
+  width: 60px;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 10px;
+  background-color: #e7e0e9;
+  border: none;
+  border-radius: 6px;
+  color: black;
+  font-weight: bold;
+}
+
+.timer-labels {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  font-size: 0.9rem;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.timer-buttons {
+  display: flex;
+justify-content: space-between;
+gap: 12px; /* adds space between Cancel and OK */
+}
+
+.cancel-btn, .ok-btn {
+  flex: 1;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: #e9a648 !important;
+  background-color: #a47d52 !important;
+}
+
+.cancel-btn:hover {
+  background-color: white !important;
+}
+
+.ok-btn:hover {
+  background-color: white !important;
+}
+
+.top-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 5;
+}
+
+.top-icons img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: white;
+  padding: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.room-layout {
+  background-image: url('./assets/room.jpg');
+  background-size: cover;        
+  background-position: top center; 
+  background-repeat: no-repeat;
+  margin-top: 20px;
+  height: 80%;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+}
+
+.door-overlay {
+  position: absolute;
+  top: 85px;   /* adjust this to align with the door */
+  left: 20px;  /* adjust this based on where the door sits in the image */
+  width: 60px; /* approximate width of the door */
+  height: 100px; /* approximate height of the door */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.door-overlay:hover {
+  outline: 2px dashed rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+}
+
 
   /* Experimental */
   .ai-chat-history {
@@ -343,12 +359,3 @@
     color: #842029;
     text-align: left;
   }
-
-  .countdown-display {
-    font-size: 1.3rem;
-    font-weight: bold;
-    margin-top: 12px;
-    color: white;
-    text-align: center;
-  }
-  
