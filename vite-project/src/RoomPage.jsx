@@ -424,6 +424,10 @@ function RoomPage() {
                 onChange={(e) => setTimerMinute(e.target.value.padStart(2, '0'))}
             />
             </div>
+            <div className="timer-labels">
+              <label>Hour</label>
+              <label>Minute</label>  
+            </div>
             <div className="timer-buttons">
             <button className="cancel-btn" onClick={() => setShowTimer(false)}>Cancel</button>
             <button className="ok-btn" onClick={() => {
