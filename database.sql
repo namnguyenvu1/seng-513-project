@@ -1,4 +1,5 @@
 -- Create the database
+DROP DATABASE study_lounge;
 CREATE DATABASE IF NOT EXISTS study_lounge;
 USE study_lounge;
 
@@ -45,4 +46,11 @@ CREATE TABLE IF NOT EXISTS friends (
     friend_email VARCHAR(255) NOT NULL, -- Friend's email
     FOREIGN KEY (email) REFERENCES users(email) ON DELETE CASCADE,
     FOREIGN KEY (friend_email) REFERENCES users(email) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS todo_list (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_email VARCHAR(255) NOT NULL,
+    note TEXT NOT NULL,
+    FOREIGN KEY (user_email) REFERENCES users(email) ON DELETE CASCADE
 );
