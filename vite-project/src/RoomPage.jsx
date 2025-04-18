@@ -37,7 +37,8 @@ function RoomPage() {
   const [chatHistory, setChatHistory] = useState([]); // Add state for chat history
   const [countdownTime, setCountdownTime] = useState(null); // in seconds
   const [displayTime, setDisplayTime] = useState(""); // "00:00"
- 
+  const [showTimerEndPopup, setShowTimerEndPopup] = useState(false);
+
 
     useEffect(() => {
       if (countdownTime === null) return;
@@ -45,6 +46,7 @@ function RoomPage() {
         setCountdownTime(prev => {
           if (prev <= 1) {
             clearInterval(interval);
+            setShowTimerEndPopup(true);
             return null;
           }
           return prev - 1;
@@ -250,7 +252,7 @@ function RoomPage() {
         <h2>{room} — {type === "private" ? "Private Room" : "Public Room"}</h2>
         {displayTime && (
           <div className="countdown-display">
-          ⏳ Time left: {displayTime}
+           Time left: {displayTime}
         </div>
         )}
         <div className="top-icons">
@@ -432,8 +434,12 @@ function RoomPage() {
             </div>
         </div>
         )}
-
-
+        {showTimerEndPopup && (
+          <div className="timer-end-popup">
+            <p>⏰ Time’s up!</p>
+            <button onClick={() => setShowTimerEndPopup(false)}>Got it</button>
+          </div>
+        )}
 
     </div>
   );
