@@ -24,6 +24,35 @@ function RoomPage() {
   const [timerMinute, setTimerMinute] = useState("00");
   const [aiResponse, setAiResponse] = useState("");
   const [chatHistory, setChatHistory] = useState([]); // Add state for chat history
+  const [countdownTime, setCountdownTime] = useState(null); // in seconds
+  const [displayTime, setDisplayTime] = useState(""); // "00:00"
+ 
+
+    useEffect(() => {
+      if (countdownTime === null) return;
+      const interval = setInterval(() => {
+        setCountdownTime(prev => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            return null;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }, [countdownTime]);
+  
+    useEffect(() => {
+      if (countdownTime === null) {
+        setDisplayTime("");
+        return;
+      }
+      const h = String(Math.floor(countdownTime / 3600)).padStart(2, '0');
+      const m = String(Math.floor((countdownTime % 3600) / 60)).padStart(2, '0');
+      const s = String(countdownTime % 60).padStart(2, '0');
+      setDisplayTime(`${h}:${m}:${s}`);
+    }, [countdownTime]);
+  
 
   const handleSendToAI = async () => {
     if (!aiMessage.trim()) return;
@@ -77,6 +106,11 @@ function RoomPage() {
     <div className="room-container">
       <div className="room-header">
         <h2>{room} — {type === "private" ? "Private Room" : "Public Room"}</h2>
+        {displayTime && (
+          <div className="countdown-display">
+          ⏳ Time left: {displayTime}
+        </div>
+        )}
         <div className="top-icons">
           <img src={timerIcon} alt="Timer" className="timer" onClick={() => setShowTimer(true)} />
           <img src={hamburgerIcon} alt="Menu" className="hamburger" onClick={() => setMenuOpen(!menuOpen)}/>
@@ -233,8 +267,9 @@ function RoomPage() {
             <div className="timer-buttons">
             <button className="cancel-btn" onClick={() => setShowTimer(false)}>Cancel</button>
             <button className="ok-btn" onClick={() => {
-                alert(`Timer set to ${timerHour}:${timerMinute}`);
-                setShowTimer(false);
+              const totalSeconds = parseInt(timerHour) * 3600 + parseInt(timerMinute) * 60;
+              setCountdownTime(totalSeconds);
+              setShowTimer(false);
             }}>OK</button>
             </div>
         </div>

@@ -343,3 +343,12 @@
     color: #842029;
     text-align: left;
   }
+
+  .countdown-display {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 12px;
+    color: white;
+    text-align: center;
+  }
+  
