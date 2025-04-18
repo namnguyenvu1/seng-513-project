@@ -254,7 +254,6 @@ function RoomPage() {
         </div>
         )}
         <div className="top-icons">
-          <img src={timerIcon} alt="Timer" className="timer" onClick={() => setShowTimer(true)} />
           <img src={hamburgerIcon} alt="Menu" className="hamburger" onClick={() => setMenuOpen(!menuOpen)}/>
         </div>
       </div>
@@ -289,6 +288,7 @@ function RoomPage() {
           <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setMenuOpen(false)}/>
             <button onClick={() => { setShowTodo(true); setMenuOpen(false); }}>To-Do List</button>
             <button onClick={() => { setShowAI(true); setMenuOpen(false); }}>AI Assistant</button>
+            <button onClick={() => { setShowTimer(true); setMenuOpen(false); }}>Timer</button>
             <button onClick={() => alert("Invite clicked")}>Invite</button>
         </div>
         )}
