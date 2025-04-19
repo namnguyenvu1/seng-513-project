@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
 import arrowIcon from './assets/arrow.png';
+
 
 import AgoraRTC from "agora-rtc-sdk-ng";
 
@@ -39,13 +40,22 @@ function RoomPage() {
   const [displayTime, setDisplayTime] = useState(""); // "00:00"
   const [showTimerEndPopup, setShowTimerEndPopup] = useState(false);
 
+  const timerSound = useRef(null);
 
+  useEffect(() => {
+    timerSound.current = new Audio("/timer.mp3");
+    timerSound.current.volume = 0.8;
+  }, []);  
     useEffect(() => {
       if (countdownTime === null) return;
       const interval = setInterval(() => {
         setCountdownTime(prev => {
           if (prev <= 1) {
             clearInterval(interval);
+            if (timerSound.current) {
+              timerSound.current.currentTime = 0;
+              timerSound.current.play();
+            }
             setShowTimerEndPopup(true);
             return null;
           }
@@ -441,7 +451,15 @@ function RoomPage() {
         {showTimerEndPopup && (
           <div className="timer-end-popup">
             <p>⏰ Time’s up!</p>
-            <button onClick={() => setShowTimerEndPopup(false)}>Got it</button>
+            <button onClick={() => {
+              if (timerSound.current){
+                timerSound.current.pause();
+                timerSound.current.currentTime = 0;
+              }
+              setShowTimerEndPopup(false);
+            }}>
+              Got it
+            </button>
           </div>
         )}
 
