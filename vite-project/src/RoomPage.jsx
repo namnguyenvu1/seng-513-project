@@ -378,7 +378,7 @@ function RoomPage() {
         {showAI && (
           <div className="ai-popup">
             <div className="ai-header">
-              <button onClick={() => setShowAI(false)}>← return</button>
+            <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setShowAI(false)}/>
             </div>
 
             <div className="ai-chat-history">
