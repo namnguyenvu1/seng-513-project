@@ -39,9 +39,37 @@ function RoomPage() {
   const [countdownTime, setCountdownTime] = useState(null); // in seconds
   const [displayTime, setDisplayTime] = useState(""); // "00:00"
   const [showTimerEndPopup, setShowTimerEndPopup] = useState(false);
-
+  const bgMusic = useRef(null);
   const timerSound = useRef(null);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
 
+  useEffect(() => {
+    bgMusic.current = new Audio("/bgMusic.mp3");
+    bgMusic.current.loop = true;
+    bgMusic.current.volume = 0.3;
+  
+    // try to play right away
+    const playPromise = bgMusic.current.play();
+  
+    // catch autoplay errors
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.warn("Autoplay blocked — will play after user interaction");
+        // fallback: play on next click
+        const resumeAudio = () => {
+          bgMusic.current.play();
+          window.removeEventListener("click", resumeAudio);
+        };
+        window.addEventListener("click", resumeAudio);
+      });
+    }
+  
+    return () => {
+      bgMusic.current?.pause();
+      bgMusic.current = null;
+    };
+  }, []);
+  
   useEffect(() => {
     timerSound.current = new Audio("/timer.mp3");
     timerSound.current.volume = 0.8;
@@ -462,7 +490,20 @@ function RoomPage() {
             </button>
           </div>
         )}
-
+      <button
+        className="music-toggle-btn"
+        onClick={() => {
+          if (bgMusic.current.paused) {
+            bgMusic.current.play();
+            setIsMusicPlaying(true);
+          } else {
+            bgMusic.current.pause();
+            setIsMusicPlaying(false);
+          }
+        }}
+      >
+        {bgMusic.current?.paused ? "🔈 Play Music" : "🔇 Mute Music"}
+      </button>
     </div>
   );
 }

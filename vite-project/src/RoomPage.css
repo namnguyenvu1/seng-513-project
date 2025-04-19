@@ -273,7 +273,7 @@ color: white;
 .timer-buttons {
   display: flex;
 justify-content: space-between;
-gap: 12px; /* adds space between Cancel and OK */
+gap: 12px; 
 }
 
 .cancel-btn, .ok-btn {
@@ -332,10 +332,10 @@ gap: 12px; /* adds space between Cancel and OK */
 
 .door-overlay {
   position: absolute;
-  top: 85px;   /* adjust this to align with the door */
-  left: 20px;  /* adjust this based on where the door sits in the image */
-  width: 60px; /* approximate width of the door */
-  height: 100px; /* approximate height of the door */
+  top: 85px;   
+  left: 20px;  
+  width: 60px; 
+  height: 100px; 
   background: transparent;
   border: none;
   cursor: pointer;
@@ -439,5 +439,28 @@ gap: 12px; /* adds space between Cancel and OK */
   z-index: 1;
   color: #ffffff;
   font-weight: bold;
-  transform: translateY(-25px); /* Moves the username up */
+  transform: translateY(-25px); 
+}
+
+.music-toggle-btn {
+  position: absolute;
+  top: 30px;
+  right: 90px;
+  font-size: 11px;
+  padding: 4px 8px;          
+  max-width: 100px;         
+  white-space: nowrap;        
+  background-color: #f3c97b;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.music-toggle-btn:hover {
+  background-color: #ffdb8a;
+  transform: scale(1.05);
 }
