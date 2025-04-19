@@ -4,6 +4,7 @@ import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
 import arrowIcon from './assets/arrow.png';
+import xIcon from './assets/x.png';
 
 
 import AgoraRTC from "agora-rtc-sdk-ng";
@@ -325,7 +326,7 @@ function RoomPage() {
     
       {menuOpen && (
         <div className="menu-popup">
-          <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setMenuOpen(false)}/>
+          <img src={xIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setMenuOpen(false)}/>
             <button onClick={() => { setShowTodo(true); setMenuOpen(false); }}>To-Do List</button>
             <button onClick={() => { setShowAI(true); setMenuOpen(false); }}>AI Assistant</button>
             <button onClick={() => { setShowTimer(true); setMenuOpen(false); }}>Timer</button>
@@ -337,7 +338,7 @@ function RoomPage() {
         <div className="todo-popup">
             <div className="todo-header">
             <div className="return-button-container">
-                <button onClick={() => setShowTodo(false)}>Return</button>
+                <button onClick={() => {setShowTodo(false); setMenuOpen(true);}}>Return</button>
             </div>
             <h3>To-Do List</h3>
             </div>
@@ -416,7 +417,7 @@ function RoomPage() {
         {showAI && (
           <div className="ai-popup">
             <div className="ai-header">
-            <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setShowAI(false)}/>
+            <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => {setShowAI(false); setMenuOpen(true);}}/>
             </div>
 
             <div className="ai-chat-history">
@@ -443,7 +444,7 @@ function RoomPage() {
 
         {showTimer && (
         <div className="timer-popup">
-          <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setShowTimer(false)}/>
+          <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => {setShowTimer(false); setMenuOpen(true)}}/>
             <h3>Enter Time</h3>
             <div className="time-inputs">
             <input
