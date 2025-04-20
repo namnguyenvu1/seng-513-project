@@ -337,9 +337,7 @@ function RoomPage() {
         {showTodo && (
         <div className="todo-popup">
             <div className="todo-header">
-            <div className="return-button-container">
-                <button onClick={() => {setShowTodo(false); setMenuOpen(true);}}>Return</button>
-            </div>
+            <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => {setShowTodo(false); setMenuOpen(true);}}/>
             <h3>To-Do List</h3>
             </div>
 
