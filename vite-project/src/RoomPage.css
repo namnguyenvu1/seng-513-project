@@ -1,9 +1,17 @@
+/* .room-container {
+  background-color: #f3ad62;
+  height: 100vh;
+  padding: 20px;
+  position: relative;
+} */
+
 .room-container {
   background-color: #f3ad62;
-  height: 110vh;
-  padding: 10px;
+  height: 100vh;
+  padding: 20px;
   position: relative;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .room-layout {
@@ -29,6 +37,7 @@
   transition: transform 0.2s ease;
   color: #000;
 }
+
 
 .menu-popup {
   position: absolute;
@@ -77,63 +86,51 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 280px;
-  background-color: #a4835c;
+  background: #fff;
   padding: 16px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   z-index: 20;
 }
 
+.return-button-container {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  z-index: 21;
+}
+
 .todo-header {
+  /* display: flex; */
   justify-content: space-between;
   align-items: center;
-  color: white;
 }
 
 .todo-input {
   margin-top: 12px;
-  display: flex;
-    align-items: center;
-    border-radius: 30px;
-    padding: 0px 0px;
-    flex-direction: row;
-    justify-content: center;
+  /* display: flex; */
+  gap: 8px;
 }
 
 .todo-input input {
-  padding: 0 10px;
-  height: 30px;
-  border: none;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-  font-style: normal;
-  background-color: white;
-  color: black;
-  width: 155px;
-  line-height: 1;
-  line-height: 1;
-}
-
-.todo-input input::placeholder {
-  color: black;
+  /* flex: 1; */
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
 .todo-input button {
-  background-color: #fbac3d;
+  background-color: #f4a261;
   color: white;
-  border-bottom-left-radius: 0px;
-  border-top-left-radius: 0px;
-  height: 45px;
-  width: 70px;
-  margin-top: 0px;
-  padding: 0px;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
   cursor: pointer;
-  font-style: normal;
-  position: relative;
 }
 
 .todo-list {
   list-style: none;
+  padding: 0;
   margin-top: 12px;
   max-height: 180px;
   overflow-y: auto;
@@ -141,43 +138,31 @@
 
 .todo-list li {
   display: flex;
-  align-items: center; /* makes text and x vertically aligned */
-  padding: 10px 14px;
-  border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 400;
-  background: none;
-  border: none;
+  justify-content: space-between;
+  padding: 6px 4px;
+  border-bottom: 1px solid #ddd;
 }
 
 .remove-task {
   background: none;
   border: none;
-  color: white;
+  color: red;
   cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1rem;
 }
-
 
 .ai-popup {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 700px;
-  height: 400px; /* Taller for scrollable chat area */
-  background-color: #a4835c;
+  width: 300px;
+  background-color: #a1724f;
   color: white;
   border-radius: 14px;
-  padding: 16px;
+  padding: 20px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   z-index: 30;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .ai-header {
@@ -193,47 +178,33 @@
   cursor: pointer;
 }
 
-  .ai-body {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    border-radius: 30px;
-    padding: 8px 14px;
-    gap: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    margin-top: 10px;
-  }
-  
-  .ai-body textarea {
-    flex: 1;
-    border: none;
-    outline: none;
-    resize: none;
-    font-size: 1rem;
-    padding: 6px 0;
-    background: transparent;
-    color: black;
-    line-height: 1.3;
-  }
-  
-  .ai-body button {
-    width: 60px;
-    height: 42px;
-    padding: 0;
-    border-radius: 50%;
-    background-color: #fbac3d;
-    color: white;
-    font-size: 1.2rem;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0; 
-    font-style: normal;
-  }
-  
-  
+.ai-body {
+  display: flex;
+  flex-direction: column; /* Stack vertically */
+  gap: 10px;               /* Spacing between textarea and button */
+}
+
+.ai-body textarea {
+  resize: vertical;        /* Allow vertical resizing */
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  min-height: 60px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.ai-body button {
+  background-color: #f4a261;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: flex-end;    /* Aligns button to the right */
+}  
 
 .timer-popup {
   position: absolute;
@@ -292,7 +263,7 @@ color: white;
 .timer-buttons {
   display: flex;
 justify-content: space-between;
-gap: 12px; 
+gap: 12px; /* adds space between Cancel and OK */
 }
 
 .cancel-btn, .ok-btn {
@@ -337,26 +308,50 @@ gap: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.room-layout {
+/* .room-layout {
   background-image: url('./assets/room.jpg');
   background-size: cover;        
   background-position: top center; 
   background-repeat: no-repeat;
   margin-top: 20px;
-  height: 100%;
+  height: 80%;
   border-radius: 12px;
   padding: 20px;
   position: relative;
-  transform: scale(0.9);          /* zoom out to 90% */
-  transform-origin: top center;   /* keep it centered */
+} */
+
+.room-layout {
+  background-image: url('./assets/room.jpg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-top: 20px;
+  height: calc(100vh - 40px);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+
+  /* Default state for narrow screens */
+  background-size: 100% 100%; /* This will stretch the image vertically and horizontally */
+  height: 100%; /* This will make the container fit the image */
+  min-height: 400px; /* Set a minimum height to prevent it from getting too small */
+  width: 92.5%;
+
+  /* Media query for wider screens */
+  @media screen and (min-width: 600px) {
+    height: 600px; /* Fixed height for wider screens */
+    width: 96.5%;
+    background-size: 100% 100%; /* Force stretch in both directions */
+  }
 }
 
 .door-overlay {
   position: absolute;
-  top: 85px;   
-  left: 20px;  
-  width: 60px; 
-  height: 100px; 
+  top: 85px;   /* adjust this to align with the door */
+  left: 20px;  /* adjust this based on where the door sits in the image */
+  width: 60px; /* approximate width of the door */
+  height: 100px; /* approximate height of the door */
   background: transparent;
   border: none;
   cursor: pointer;
@@ -367,6 +362,7 @@ gap: 12px;
   outline: 2px dashed rgba(255, 255, 255, 0.6);
   border-radius: 8px;
 }
+
 
   /* Experimental */
   .ai-chat-history {
@@ -459,29 +455,5 @@ gap: 12px;
   z-index: 1;
   color: #ffffff;
   font-weight: bold;
-  transform: translateY(-25px); 
+  transform: translateY(-25px); /* Moves the username up */
 }
-
-.music-toggle-btn {
-  position: absolute;
-  top: -70px;
-  right: 20px;
-  font-size: 11px;
-  padding: 4px 8px;          
-  max-width: 100px;         
-  white-space: nowrap;        
-  background-color: #f3c97b;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-.music-toggle-btn:hover {
-  background-color: #ffdb8a;
-  transform: scale(1.05);
-}
-

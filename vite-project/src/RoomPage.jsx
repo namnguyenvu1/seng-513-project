@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
 import arrowIcon from './assets/arrow.png';
-import xIcon from './assets/X.png';
-
 
 import AgoraRTC from "agora-rtc-sdk-ng";
 
@@ -40,51 +38,14 @@ function RoomPage() {
   const [countdownTime, setCountdownTime] = useState(null); // in seconds
   const [displayTime, setDisplayTime] = useState(""); // "00:00"
   const [showTimerEndPopup, setShowTimerEndPopup] = useState(false);
-  const bgMusic = useRef(null);
-  const timerSound = useRef(null);
-  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
 
-  useEffect(() => {
-    bgMusic.current = new Audio("/bgMusic.mp3");
-    bgMusic.current.loop = true;
-    bgMusic.current.volume = 0.3;
-  
-    // try to play right away
-    const playPromise = bgMusic.current.play();
-  
-    // catch autoplay errors
-    if (playPromise !== undefined) {
-      playPromise.catch((err) => {
-        console.warn("Autoplay blocked — will play after user interaction");
-        // fallback: play on next click
-        const resumeAudio = () => {
-          bgMusic.current.play();
-          window.removeEventListener("click", resumeAudio);
-        };
-        window.addEventListener("click", resumeAudio);
-      });
-    }
-  
-    return () => {
-      bgMusic.current?.pause();
-      bgMusic.current = null;
-    };
-  }, []);
-  
-  useEffect(() => {
-    timerSound.current = new Audio("/timer.mp3");
-    timerSound.current.volume = 0.8;
-  }, []);  
+
     useEffect(() => {
       if (countdownTime === null) return;
       const interval = setInterval(() => {
         setCountdownTime(prev => {
           if (prev <= 1) {
             clearInterval(interval);
-            if (timerSound.current) {
-              timerSound.current.currentTime = 0;
-              timerSound.current.play();
-            }
             setShowTimerEndPopup(true);
             return null;
           }
@@ -155,13 +116,22 @@ function RoomPage() {
         let newTop = prevPosition.top;
         let newLeft = prevPosition.left;
 
-        if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
+        // if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
+        //   newTop = Math.max(0, prevPosition.top - step);
+        // } else if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
+        //   newTop = Math.min(containerRect.height - 100, prevPosition.top + step); // 100 is avatar height
+        // } else if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
+        //   newLeft = Math.max(0, prevPosition.left - step);
+        // } else if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
+        //   newLeft = Math.min(containerRect.width - 100, prevPosition.left + step); // 100 is avatar width
+        // }
+        if (e.key === "ArrowUp") {
           newTop = Math.max(0, prevPosition.top - step);
-        } else if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
+        } else if (e.key === "ArrowDown") {
           newTop = Math.min(containerRect.height - 100, prevPosition.top + step); // 100 is avatar height
-        } else if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
+        } else if (e.key === "ArrowLeft") {
           newLeft = Math.max(0, prevPosition.left - step);
-        } else if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
+        } else if (e.key === "ArrowRight") {
           newLeft = Math.min(containerRect.width - 100, prevPosition.left + step); // 100 is avatar width
         }
 
@@ -300,7 +270,6 @@ function RoomPage() {
       </div>
 
       <div className="room-layout">
-        <div className="room-inner">
         <div className="reminder">
           📌 Click on the door to go back to room select
           <button className="door-overlay" onClick={() => navigate("/main")}></button>
@@ -327,7 +296,7 @@ function RoomPage() {
     
       {menuOpen && (
         <div className="menu-popup">
-          <img src={xIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setMenuOpen(false)}/>
+          <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setMenuOpen(false)}/>
             <button onClick={() => { setShowTodo(true); setMenuOpen(false); }}>To-Do List</button>
             <button onClick={() => { setShowAI(true); setMenuOpen(false); }}>AI Assistant</button>
             <button onClick={() => { setShowTimer(true); setMenuOpen(false); }}>Timer</button>
@@ -338,7 +307,9 @@ function RoomPage() {
         {showTodo && (
         <div className="todo-popup">
             <div className="todo-header">
-            <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => {setShowTodo(false); setMenuOpen(true);}}/>
+            <div className="return-button-container">
+                <button onClick={() => setShowTodo(false)}>Return</button>
+            </div>
             <h3>To-Do List</h3>
             </div>
 
@@ -416,7 +387,7 @@ function RoomPage() {
         {showAI && (
           <div className="ai-popup">
             <div className="ai-header">
-            <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => {setShowAI(false); setMenuOpen(true);}}/>
+              <button onClick={() => setShowAI(false)}>← return</button>
             </div>
 
             <div className="ai-chat-history">
@@ -443,7 +414,7 @@ function RoomPage() {
 
         {showTimer && (
         <div className="timer-popup">
-          <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => {setShowTimer(false); setMenuOpen(true)}}/>
+          <img src={arrowIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setShowTimer(false)}/>
             <h3>Enter Time</h3>
             <div className="time-inputs">
             <input
@@ -479,32 +450,10 @@ function RoomPage() {
         {showTimerEndPopup && (
           <div className="timer-end-popup">
             <p>⏰ Time’s up!</p>
-            <button onClick={() => {
-              if (timerSound.current){
-                timerSound.current.pause();
-                timerSound.current.currentTime = 0;
-              }
-              setShowTimerEndPopup(false);
-            }}>
-              Got it
-            </button>
+            <button onClick={() => setShowTimerEndPopup(false)}>Got it</button>
           </div>
         )}
-      <button
-        className="music-toggle-btn"
-        onClick={() => {
-          if (bgMusic.current.paused) {
-            bgMusic.current.play();
-            setIsMusicPlaying(true);
-          } else {
-            bgMusic.current.pause();
-            setIsMusicPlaying(false);
-          }
-        }}
-      >
-        {bgMusic.current?.paused ? "🔈 Play Music" : "🔇 Mute Music"}
-      </button>
-      </div>
+
     </div>
   );
 }
