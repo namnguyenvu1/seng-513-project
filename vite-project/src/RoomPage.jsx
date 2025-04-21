@@ -273,17 +273,21 @@ function RoomPage() {
           📌 Click on the door to go back to room select
           <button id="leave-icon" className="door-overlay" onClick={handleLeaveRoom}></button>
         </div>
+
+        {/* 
         <div className="voice-status">
           🔊 Voice chat active in: <strong>{room}</strong>
-        </div>
+        </div>        
+        */}
+
       </div>
 
       {/* Movable User Avatar */}
-      <div id="members">
-      </div>
+      <div id="members" className="members"></div>
 
 
-      {/* Movable User Avatar */}
+      {/* Movable User Avatar
+      
       <div
         className="avatar-stack"
         style={{
@@ -297,7 +301,10 @@ function RoomPage() {
         <img src={hairStyles[hairIndex]} alt="Hair" className="edit-avatar overlay" />
         <div className="username-display">{username}</div>
 
-      </div>
+      </div>      
+      
+      */}
+
     
       {menuOpen && (
         <div className="menu-popup">

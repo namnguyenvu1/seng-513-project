@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root", // or your MySQL username
-  password: "vunamnguyen123", // replace with your actual password
+  password: "Funnyman41!", // replace with your actual password
   database: "study_lounge",
 });
 
@@ -117,11 +117,12 @@ app.post("/update-profile", (req, res) => {
   );
 });
 
+//get profile info with user email 
 app.get("/get-profile", (req, res) => {
   const { email } = req.query;
 
   db.query(
-    "SELECT skin, hair, username, bio FROM users WHERE email = ?",
+    "SELECT skin, hair, username, bio, id FROM users WHERE email = ?",
     [email],
     (err, results) => {
       if (err) return res.status(500).send("Database error.");
@@ -130,6 +131,23 @@ app.get("/get-profile", (req, res) => {
     }
   );
 });
+
+//get user profile info with user ID
+// Get profile info by user ID
+app.get("/get-profile-by-id", (req, res) => {
+  const { id } = req.query;
+
+  db.query(
+    "SELECT skin, hair, username, bio, email FROM users WHERE id = ?",
+    [id],
+    (err, results) => {
+      if (err) return res.status(500).send("Database error.");
+      if (results.length === 0) return res.status(404).send("User not found.");
+      res.json(results[0]);
+    }
+  );
+});
+
 
 // Admin/Staff Page
 app.post("/admin-login", (req, res) => {
@@ -439,7 +457,22 @@ app.get("/user-count", (req, res) => {
   });
 });
 
+
+// get user ID 
+app.get("/get-user-id", (req, res) => {
+  const { email } = req.query;
+
+  db.query("SELECT id FROM users WHERE email = ?", [email], (err, results) => {
+    if (err) return res.status(500).send("Database error.");
+    if (results.length === 0) return res.status(404).send("User not found.");
+    res.json({ userId: results[0].id });
+  });
+});
+
 // Start server
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });
+
+
+
