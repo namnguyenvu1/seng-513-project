@@ -68,7 +68,7 @@ const initRtc = async () => {
     // Render the user's avatar
     const membersDiv = document.getElementById("members");
     if (membersDiv) {
-      const avatarPosition = { top: "100px", left: "100px" }; // Example position
+      const avatarPosition = { top: "100px", left: "100px" }; // Initial position
 
       membersDiv.insertAdjacentHTML(
         "beforeend",
@@ -77,6 +77,7 @@ const initRtc = async () => {
           class="avatar-stack user-rtc-${userId}"
           id="${userId}"
           style="position: absolute; top: ${avatarPosition.top}; left: ${avatarPosition.left};"
+          draggable="true"
         >
           <div class="username-display">${username}</div>
           <img src="${skinTones[skinIdx]}" alt="Skin" class="edit-avatar base-layer" />
@@ -179,6 +180,9 @@ let leaveRoom = async () => {
     document.getElementById('members').innerHTML = ''
 
 }
+
+
+
 export { enterRoom };
 export { leaveRoom };
 export default initRtc;

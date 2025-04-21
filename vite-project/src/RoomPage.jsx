@@ -115,9 +115,11 @@ function RoomPage() {
   const [avatarPosition, setAvatarPosition] = useState({ top: 100, left: 100 }); // Initial position
  
   // States for user profile
+  
   const [skinIndex, setSkinIndex] = useState(0);
   const [hairIndex, setHairIndex] = useState(0);
   const [username, setUsername] = useState("");
+  const [userId, setuserId] = useState(0);
   const [bio, setBio] = useState("");
 
   const skinTones = [skin1, skin2, skin3];
@@ -143,9 +145,6 @@ function RoomPage() {
   }, []);
   */
 
-
-
-
   // Fetch user profile data
   useEffect(() => {
     const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage
@@ -169,41 +168,55 @@ function RoomPage() {
         }
         if (data.username) setUsername(data.username);
         if (data.bio) setBio(data.bio);
+        if (data.id) setuserId( data.id ); // Set initial position for the avatar}
       })
       .catch((err) => console.error("Failed to fetch profile data:", err));
   }, []);
 
-    // Handle keyboard movement
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      const step = 15; // Movement step size
-      const roomContainer = document.querySelector(".room-container");
-      const containerRect = roomContainer.getBoundingClientRect();
 
-      setAvatarPosition((prevPosition) => {
-        let newTop = prevPosition.top;
-        let newLeft = prevPosition.left;
+useEffect(() => {
+  const handleKeyDown = (e) => {
+    const step = 15; // Movement step size
+    const avatar = document.getElementById(userId); // Use the actual user ID
+    const roomLayoutDiv = document.querySelector(".room-layout"); // Reference the room-layout container
 
-        if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
-          newTop = Math.max(0, prevPosition.top - step);
-        } else if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
-          newTop = Math.min(containerRect.height - 100, prevPosition.top + step); // 100 is avatar height
-        } else if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
-          newLeft = Math.max(0, prevPosition.left - step);
-        } else if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
-          newLeft = Math.min(containerRect.width - 100, prevPosition.left + step); // 100 is avatar width
-        }
+    if (!avatar || !roomLayoutDiv) {
+      console.error("Avatar or room-layout div not found.");
+      return;
+    }
 
-        return { top: newTop, left: newLeft };
-      });
-    };
+    const rect = roomLayoutDiv.getBoundingClientRect();
+    const currentTop = parseInt(avatar.style.top, 10) || 0;
+    const currentLeft = parseInt(avatar.style.left, 10) || 0;
 
-    window.addEventListener("keydown", handleKeyDown);
+    let newTop = currentTop;
+    let newLeft = currentLeft;
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+    // Handle W, S, A, D key movements
+    if (e.key === "w" || e.key === "W") {
+      newTop = Math.max(0, currentTop - step);
+    } else if (e.key === "s" || e.key === "S") {
+      newTop = Math.min(rect.height - avatar.offsetHeight, currentTop + step);
+    } else if (e.key === "a" || e.key === "A") {
+      newLeft = Math.max(0, currentLeft - step);
+    } else if (e.key === "d" || e.key === "D") {
+      newLeft = Math.min(rect.width - avatar.offsetWidth, currentLeft + step);
+    }
+
+    // Update avatar position
+    avatar.style.top = `${newTop}px`;
+    avatar.style.left = `${newLeft}px`;
+
+    console.log(`Avatar moved to: top=${newTop}px, left=${newLeft}px`);
+  };
+
+  window.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown);
+  };
+}, [userId]);
+
 
   const handleSendToAI = async () => {
     if (!aiMessage.trim()) return;
