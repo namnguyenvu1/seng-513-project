@@ -1,4 +1,5 @@
 -- Create the database
+DROP DATABASE study_lounge;
 CREATE DATABASE IF NOT EXISTS study_lounge;
 USE study_lounge;
 
@@ -20,6 +21,11 @@ INSERT INTO users (email, password, skin, hair) VALUES
 ('b@gmail.com', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW', NULL, NULL),
 ('c@gmail.com', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW', NULL, NULL);
 
+INSERT INTO users (email, password, skin, hair, username) VALUES
+('albert@gmail.com', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW', NULL, NULL, 'Albert'),
+('bonnie@gmail.com', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW', NULL, NULL, 'Bonnie'),
+('chirag@gmail.com', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW', NULL, NULL, 'Chirag');
+
 -- Create the administration table
 CREATE TABLE IF NOT EXISTS administration (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,18 +39,18 @@ INSERT INTO administration (name, role, password) VALUES
 ('admin', 'admin', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW'), -- Password: 123
 ('staff', 'staff', '$2b$10$1XQ/pLLJben/h92TKYvMju77BMW7mHSfaNfQ7beir8tLcVeHPcQnW'); -- Password: 123
 
--- Create friends table with foreign key reference to users
+-- Create the new friends table
 CREATE TABLE IF NOT EXISTS friends (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    avatar VARCHAR(255) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    email VARCHAR(255) NOT NULL, -- Current user's email
+    friend_email VARCHAR(255) NOT NULL, -- Friend's email
+    FOREIGN KEY (email) REFERENCES users(email) ON DELETE CASCADE,
+    FOREIGN KEY (friend_email) REFERENCES users(email) ON DELETE CASCADE
 );
 
--- Insert sample friends for user_id = 1
-INSERT INTO friends (user_id, name, avatar) VALUES
-(1, 'John Doe', '/avatar1.png'),
-(1, 'Mary Sue', '/avatar2.png'),
-(1, 'User 1', '/avatar3.png'),
-(1, 'User 2', '/avatar4.png');
+CREATE TABLE IF NOT EXISTS todo_list (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_email VARCHAR(255) NOT NULL,
+    note TEXT NOT NULL,
+    FOREIGN KEY (user_email) REFERENCES users(email) ON DELETE CASCADE
+);

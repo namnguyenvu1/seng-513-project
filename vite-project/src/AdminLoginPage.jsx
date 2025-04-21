@@ -20,6 +20,7 @@ function AdminLoginPage() {
     if (res.ok) {
       const data = await res.json();
       alert("Admin/Staff login successful!");
+      localStorage.setItem("staffName", name); // Store staff name in localStorage
       if (data.role === "admin") {
         navigate("/admin-dashboard");
       } else if (data.role === "staff") {
