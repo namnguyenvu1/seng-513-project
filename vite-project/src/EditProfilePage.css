@@ -43,29 +43,35 @@
   .edit-actions {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px;
     gap: 20px;
+    flex-wrap: wrap; /* ✅ allows stacking on small screens */
+    margin-bottom: 10px;
   }
+  
 
-  .cancel-btn {
-    background-color: white !important;
-    color: red !important;
-    margin-right: 30px;
+  .cancel-btn,
+  .save-btn {
+    padding: 10px 20px;
+    width: 150px;
+    max-width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    width: fit-content;
+  }
+  
+  .cancel-btn {
+    background-color: white;
+    color: red;
   }
   
   .save-btn {
     background-color: white;
     color: green;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    width: fit-content;
-    font-weight: bold !important;
   }
+  
   
   .avatar-section {
     display: flex;
