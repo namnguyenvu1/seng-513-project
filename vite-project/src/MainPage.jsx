@@ -5,7 +5,7 @@ import libraryImg from "./assets/library.png";
 import CafeImg from "./assets/cafe.png";
 import HomeImg from "./assets/home.png";
 import WhitehouseImg from "./assets/whitehouse.png";
-import University from "./assets/university.png";
+import University from "./assets/University.png";
 import profileImg from "./assets/profileI.png";
 import privateRoom from "./assets/privateRoom.webp";
 

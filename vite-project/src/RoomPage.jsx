@@ -217,6 +217,7 @@ function RoomPage() {
   useEffect(() => {
     const handleKeyDown = (e) => {
       const step = 15; // Movement step size
+
       const avatar = document.getElementById(userId); // Use the actual user ID
       const roomLayoutDiv = document.querySelector(".room-layout"); // Reference the room-layout container
   
@@ -351,15 +352,13 @@ function RoomPage() {
       {/* Movable User Avatar */}
       <div id="members" className="members"></div>
 
-
-
-    
       {menuOpen && (
         <div className="menu-popup">
           <img src={xIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setMenuOpen(false)}/>
             <button onClick={() => { setShowTodo(true); setMenuOpen(false); }}>To-Do List</button>
             <button onClick={() => { setShowAI(true); setMenuOpen(false); }}>AI Assistant</button>
             <button onClick={() => { setShowTimer(true); setMenuOpen(false); }}>Timer</button>
+
             <button onClick={() => { setShowInvite(true); setMenuOpen(false); }}>Invite</button>
       </div>
         )}
@@ -386,6 +385,7 @@ function RoomPage() {
               </div>
             </div>
           </div>
+
         )}
 
         {showTodo && (

@@ -1,6 +1,6 @@
 -- Create the database
-DROP DATABASE study_lounge;
-CREATE DATABASE IF NOT EXISTS study_lounge;
+DROP DATABASE IF EXISTS study_lounge;
+CREATE DATABASE study_lounge;
 USE study_lounge;
 
 -- Create users table with skin, hair, username, and bio columns
