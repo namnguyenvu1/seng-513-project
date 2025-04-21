@@ -1,9 +1,17 @@
+/* .room-container {
+  background-color: #f3ad62;
+  height: 100vh;
+  padding: 20px;
+  position: relative;
+} */
+
 .room-container {
   background-color: #f3ad62;
-  height: 110vh;
-  padding: 10px;
+  height: 100vh;
+  padding: 20px;
   position: relative;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .room-layout {
@@ -337,7 +345,7 @@ gap: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.room-layout {
+/* .room-layout {
   background-image: url('./assets/room.jpg');
   background-size: cover;        
   background-position: top center; 
@@ -349,6 +357,32 @@ gap: 12px;
   position: relative;
   transform: scale(0.9);          /* zoom out to 90% */
   transform-origin: top center;   /* keep it centered */
+} */
+
+.room-layout {
+  background-image: url('./assets/room.jpg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-top: 20px;
+  height: calc(100vh - 40px);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+
+  /* Default state for narrow screens */
+  background-size: 100% 100%; /* This will stretch the image vertically and horizontally */
+  height: 100%; /* This will make the container fit the image */
+  min-height: 400px; /* Set a minimum height to prevent it from getting too small */
+  width: 92.5%;
+
+  /* Media query for wider screens */
+  @media screen and (min-width: 600px) {
+    height: 600px; /* Fixed height for wider screens */
+    width: 96.5%;
+    background-size: 100% 100%; /* Force stretch in both directions */
+  }
 }
 
 .door-overlay {
