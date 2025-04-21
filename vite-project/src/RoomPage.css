@@ -1,8 +1,9 @@
 .room-container {
   background-color: #f3ad62;
-  height: 100vh;
-  padding: 20px;
+  height: 110vh;
+  padding: 10px;
   position: relative;
+  overflow: auto;
 }
 
 .room-layout {
@@ -337,10 +338,12 @@ gap: 12px;
   background-position: top center; 
   background-repeat: no-repeat;
   margin-top: 20px;
-  height: 80%;
+  height: 100%;
   border-radius: 12px;
   padding: 20px;
   position: relative;
+  transform: scale(0.9);          /* zoom out to 90% */
+  transform-origin: top center;   /* keep it centered */
 }
 
 .door-overlay {
@@ -456,8 +459,8 @@ gap: 12px;
 
 .music-toggle-btn {
   position: absolute;
-  top: 30px;
-  right: 90px;
+  top: -70px;
+  right: 20px;
   font-size: 11px;
   padding: 4px 8px;          
   max-width: 100px;         
@@ -476,5 +479,4 @@ gap: 12px;
   background-color: #ffdb8a;
   transform: scale(1.05);
 }
-
 

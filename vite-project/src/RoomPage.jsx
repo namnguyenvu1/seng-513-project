@@ -300,6 +300,7 @@ function RoomPage() {
       </div>
 
       <div className="room-layout">
+        <div className="room-inner">
         <div className="reminder">
           📌 Click on the door to go back to room select
           <button className="door-overlay" onClick={() => navigate("/main")}></button>
@@ -503,6 +504,7 @@ function RoomPage() {
       >
         {bgMusic.current?.paused ? "🔈 Play Music" : "🔇 Mute Music"}
       </button>
+      </div>
     </div>
   );
 }
