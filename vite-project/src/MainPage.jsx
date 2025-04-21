@@ -1,12 +1,14 @@
 import React, { useState } from "react"; 
 import "./MainPage.css";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import libraryImg from "./assets/library.png";
 import CafeImg from "./assets/cafe.png";
 import HomeImg from "./assets/home.png";
 import WhitehouseImg from "./assets/whitehouse.png";
 import University from "./assets/university.png";
 import profileImg from "./assets/profileI.png";
+
+import enterRoom from "./AgoraFunc"; // No curly braces for default export
 
 function MainPage() {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ function MainPage() {
   const handleProfile = () => navigate("/profile");
 
   const handleSignOut = () => {
+
     setShowConfirm(true);
     setDropdownOpen(false);
   };
@@ -34,9 +37,11 @@ function MainPage() {
     setShowConfirm(false);
   };
 
-  const handleRoomClick = (roomName) => {
+  const handleRoomClick = async (e, roomName) => {
     setSelectedRoom(roomName);
     setRoomTypePrompt(true);
+    await enterRoom(e);
+    
   };
 
   const joinRoom = (type) => {
@@ -47,6 +52,8 @@ function MainPage() {
     } else {
       navigate(`/room?location=${selectedRoom}&type=public`);
     }
+
+    
   };
   
 
@@ -72,25 +79,25 @@ function MainPage() {
       </div>
   
       <div className="rooms-grid">
-        <div className="room" onClick={() => handleRoomClick("Library")}>
+        <div className="room" onClick={(e) => handleRoomClick(e,"Library")}>
           <img className="room-image" src={libraryImg}  />
           <div className="Lib-name">Library</div>
           
         </div>
-        <div className="room" onClick={() => handleRoomClick("Cafe")}>
+        <div className="room" onClick={(e) => handleRoomClick(e,"Cafe")}>
           <img className="room-image cafe-img" src={CafeImg} alt="Cafe" />
           <div className="cafe-name">Cafe</div>
          
         </div>
-        <div className="room" onClick={() => handleRoomClick("University")}>
+        <div className="room" onClick={(e) => handleRoomClick(e,"University")}>
           <img className="room-image" src={University} alt="University" />
           <div className="Lib-name">University</div>
         </div>
-        <div className="room" onClick={() => handleRoomClick("Home")}>
+        <div className="room" onClick={(e) => handleRoomClick(e,"Home")}>
           <img className="room-image" src={HomeImg} alt="Home" />
           <div className="Lib-name">Home</div>
         </div>
-        <div className="room" onClick={() => handleRoomClick("White House")}>
+        <div className="room" onClick={(e) => handleRoomClick(e,"White House")}>
           <img className="room-image whitehouse-img" src={WhitehouseImg} alt="White House" />
           <div className="Lib-name">Whitehouse</div>
         </div>

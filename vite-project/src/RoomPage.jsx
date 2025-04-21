@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import { leaveRoom } from "./AgoraFunc"; 
+
+
 import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
@@ -19,6 +23,8 @@ import hair6 from './assets/hair/hair6.png';
 import hair7 from './assets/hair/hair7.png';
 
 function RoomPage() {
+  console.log("RoomPage rendered");
+
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
@@ -45,6 +51,29 @@ function RoomPage() {
   const skinTones = [skin1, skin2, skin3];
   const hairStyles = [hair1, hair2, hair3, hair4, hair5, hair6, hair7];
 
+  const handleLeaveRoom = async () => {
+    console.log("Leaving room...");
+    await leaveRoom(); // Call the leaveRoom function
+    navigate("/main"); // Navigate back to the main page
+  };
+
+  /*
+    useEffect(() => {
+    const initializeRoom = async () => {
+      await enterRoom();
+    };
+  
+    initializeRoom();
+  
+    return () => {
+      leaveRoom(); // Clean up resources when the component unmounts
+    };
+  }, []);
+  */
+
+
+
+
   // Fetch user profile data
   useEffect(() => {
     const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage
@@ -52,7 +81,7 @@ function RoomPage() {
       alert("No user logged in!");
       navigate("/login");
       return;
-    }
+    } 
 
     // Fetch user profile data from the backend
     fetch(`http://localhost:3000/get-profile?email=${email}`)
@@ -104,67 +133,6 @@ function RoomPage() {
     };
   }, []);
 
-  // Agora setup
-  const appId = "555ddb47a67643abbf6e20f62f0e59fa";
-  const token = null; // Add your token here if needed
-  const rtc = {
-    client: null,
-    localAudioTrack: null,
-  };
-
-  useEffect(() => {
-    const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage
-    if (!email) {
-      alert("No user logged in!");
-      navigate("/login");
-      return;
-    }
-
-    fetch(`http://localhost:3000/get-username?email=${email}`)
-      .then((res) => res.json())
-      .then((data) => {
-      if (data.username) {
-        setUsername(data.username);
-      } else {
-        console.error("Username not found in response");
-      }
-      })
-      .catch((err) => console.error("Failed to fetch username:", err));
-  }, []); 
-
-  useEffect(() => {
-    const uid = Math.floor(Math.random() * 10000);  // change to get from backend
-
-    const initAgora = async () => {
-      rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-
-      rtc.client.on("user-published", async (user, mediaType) => {
-        await rtc.client.subscribe(user, mediaType);
-        if (mediaType === "audio") {
-          user.audioTrack.play();
-        }
-      });
-
-      rtc.client.on("user-left", (user) => {
-        console.log("User left the voice chat:", user.uid);
-      });
-
-      await rtc.client.join(appId, room, token, uid);
-      rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-      await rtc.client.publish([rtc.localAudioTrack]);
-
-      console.log(`Joined room "${room}" as UID ${uid}`);
-    };
-
-    initAgora();
-
-    return () => {
-      rtc.localAudioTrack?.stop();
-      rtc.localAudioTrack?.close();
-      rtc.client?.leave();
-    };
-  }, [room]);
-
   
   return (
     <div className="room-container">
@@ -179,12 +147,17 @@ function RoomPage() {
       <div className="room-layout">
         <div className="reminder">
           📌 Click on the door to go back to room select
-          <button className="door-overlay" onClick={() => navigate("/main")}></button>
+          <button id="leave-icon" className="door-overlay" onClick={handleLeaveRoom}></button>
         </div>
         <div className="voice-status">
           🔊 Voice chat active in: <strong>{room}</strong>
         </div>
       </div>
+
+      {/* Movable User Avatar */}
+      <div id="members">
+      </div>
+
 
       {/* Movable User Avatar */}
       <div
@@ -195,9 +168,10 @@ function RoomPage() {
           left: avatarPosition.left,
         }}
       >
-        <div className="username-display">{username}</div>
+
         <img src={skinTones[skinIndex]} alt="Skin" className="edit-avatar base-layer" />
         <img src={hairStyles[hairIndex]} alt="Hair" className="edit-avatar overlay" />
+        <div className="username-display">{username}</div>
 
       </div>
     
@@ -313,7 +287,10 @@ function RoomPage() {
     </div>
   </div>
 )}
+
     </div>
+
+
   );
 }
 
