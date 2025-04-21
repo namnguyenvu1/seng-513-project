@@ -4,7 +4,7 @@ import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
 import arrowIcon from './assets/arrow.png';
-import xIcon from './assets/x.png';
+import xIcon from './assets/X.png';
 
 
 import AgoraRTC from "agora-rtc-sdk-ng";
