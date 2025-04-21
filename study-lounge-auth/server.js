@@ -476,3 +476,31 @@ app.listen(3000, () => {
 
 
 
+
+//------
+
+// Create a WebSocket server on a different port (8080)
+const WebSocket = require("ws");
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on("connection", (ws) => {
+  console.log("A user connected to the WebSocket server");
+
+  wss.on("message", (message) => {
+    console.log("Received:", message);
+  
+    // Broadcast the message to all connected clients
+    wss.clients.forEach((client) => {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        // Ensure the message is sent as a JSON string
+        client.send(JSON.stringify(message));
+      }
+    });
+  });
+
+  ws.on("close", () => {
+    console.log("A user disconnected from the WebSocket server");
+  });
+});
+
+console.log("WebSocket server running on ws://localhost:8080");

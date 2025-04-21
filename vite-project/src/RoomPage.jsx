@@ -50,6 +50,46 @@ function RoomPage() {
   const timerSound = useRef(null);
   const [isMusicPlaying, setIsMusicPlaying] = useState(true);
 
+
+  const socket = useRef(null);
+  useEffect(() => {
+    socket.current = new WebSocket("ws://localhost:8080");
+  
+    socket.current.onopen = () => {
+      console.log("Connected to WebSocket server");
+    };
+  
+    socket.current.onmessage = async (event) => {
+      let data;
+  
+      // Check if the message is a Blob
+      if (event.data instanceof Blob) {
+        const text = await event.data.text(); // Convert Blob to text
+        data = JSON.parse(text); // Parse the text as JSON
+      } else {
+        data = JSON.parse(event.data); // Parse the JSON string
+      }
+  
+      console.log("Received data:", data);
+  
+      // Update the position of the avatar dynamically
+      const avatar = document.getElementById(data.userId);
+      if (avatar) {
+        avatar.style.top = `${data.top}px`;
+        avatar.style.left = `${data.left}px`;
+      }
+    };
+  
+    socket.current.onclose = () => {
+      console.log("Disconnected from WebSocket server");
+    };
+  
+    return () => {
+      socket.current.close();
+    };
+  }, []);
+
+
   useEffect(() => {
     bgMusic.current = new Audio("/bgMusic.mp3");
     bgMusic.current.loop = true;
@@ -174,48 +214,61 @@ function RoomPage() {
   }, []);
 
 
-useEffect(() => {
-  const handleKeyDown = (e) => {
-    const step = 15; // Movement step size
-    const avatar = document.getElementById(userId); // Use the actual user ID
-    const roomLayoutDiv = document.querySelector(".room-layout"); // Reference the room-layout container
-
-    if (!avatar || !roomLayoutDiv) {
-      console.error("Avatar or room-layout div not found.");
-      return;
-    }
-
-    const rect = roomLayoutDiv.getBoundingClientRect();
-    const currentTop = parseInt(avatar.style.top, 10) || 0;
-    const currentLeft = parseInt(avatar.style.left, 10) || 0;
-
-    let newTop = currentTop;
-    let newLeft = currentLeft;
-
-    // Handle W, S, A, D key movements
-    if (e.key === "w" || e.key === "W") {
-      newTop = Math.max(0, currentTop - step);
-    } else if (e.key === "s" || e.key === "S") {
-      newTop = Math.min(rect.height - avatar.offsetHeight, currentTop + step);
-    } else if (e.key === "a" || e.key === "A") {
-      newLeft = Math.max(0, currentLeft - step);
-    } else if (e.key === "d" || e.key === "D") {
-      newLeft = Math.min(rect.width - avatar.offsetWidth, currentLeft + step);
-    }
-
-    // Update avatar position
-    avatar.style.top = `${newTop}px`;
-    avatar.style.left = `${newLeft}px`;
-
-    console.log(`Avatar moved to: top=${newTop}px, left=${newLeft}px`);
-  };
-
-  window.addEventListener("keydown", handleKeyDown);
-
-  return () => {
-    window.removeEventListener("keydown", handleKeyDown);
-  };
-}, [userId]);
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const step = 15; // Movement step size
+      const avatar = document.getElementById(userId); // Use the actual user ID
+      const roomLayoutDiv = document.querySelector(".room-layout"); // Reference the room-layout container
+  
+      if (!avatar || !roomLayoutDiv) {
+        console.error("Avatar or room-layout div not found.");
+        return;
+      }
+  
+      const rect = roomLayoutDiv.getBoundingClientRect();
+      const currentTop = parseInt(avatar.style.top, 10) || 0;
+      const currentLeft = parseInt(avatar.style.left, 10) || 0;
+  
+      let newTop = currentTop;
+      let newLeft = currentLeft;
+  
+      // Handle W, S, A, D key movements
+      if (e.key === "w" || e.key === "W") {
+        newTop = Math.max(0, currentTop - step);
+      } else if (e.key === "s" || e.key === "S") {
+        newTop = Math.min(rect.height - avatar.offsetHeight, currentTop + step);
+      } else if (e.key === "a" || e.key === "A") {
+        newLeft = Math.max(0, currentLeft - step);
+      } else if (e.key === "d" || e.key === "D") {
+        newLeft = Math.min(rect.width - avatar.offsetWidth, currentLeft + step);
+      }
+  
+      // Update avatar position locally
+      avatar.style.top = `${newTop}px`;
+      avatar.style.left = `${newLeft}px`;
+  
+      console.log(`Avatar moved to: top=${newTop}px, left=${newLeft}px`);
+  
+      // Broadcast the new position to the WebSocket server
+      if (socket.current && socket.current.readyState === WebSocket.OPEN) {
+        socket.current.send(
+          JSON.stringify({
+            userId,
+            top: newTop,
+            left: newLeft,
+          })
+        );
+      } else {
+        console.warn("WebSocket is not open. Message not sent.");
+      }
+    };
+  
+    window.addEventListener("keydown", handleKeyDown);
+  
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [userId]);
 
 
   const handleSendToAI = async () => {
