@@ -1,9 +1,21 @@
 .main-container {
+  background-color: #f3ad62;
+  min-height: 100vh;
+  min-height: 100dvh; /* fallback first, then mobile-safe */
+  display: flex;
+  flex-direction: column;
+}
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
     background-color: #f3ad62;
-    height: 100vh;
-    padding: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   
+
   .top-bar {
     display: flex;
     justify-content: space-between;
@@ -244,5 +256,12 @@
   .profile-wrapper {
     position: absolute;
     right: 16px;
+  }
+
+  body::after {
+    content: '';
+    display: block;
+    background: red;
+    height: 20px;
   }
   
