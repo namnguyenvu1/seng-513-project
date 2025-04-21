@@ -49,7 +49,7 @@ function RoomPage() {
   const bgMusic = useRef(null);
   const timerSound = useRef(null);
   const [isMusicPlaying, setIsMusicPlaying] = useState(true);
-
+  const [showInvite, setShowInvite] = useState(false); // State for managing the invite overlay
 
   const socket = useRef(null);
   useEffect(() => {
@@ -352,24 +352,6 @@ function RoomPage() {
       <div id="members" className="members"></div>
 
 
-      {/* Movable User Avatar
-      
-      <div
-        className="avatar-stack"
-        style={{
-          position: "absolute",
-          top: avatarPosition.top,
-          left: avatarPosition.left,
-        }}
-      >
-
-        <img src={skinTones[skinIndex]} alt="Skin" className="edit-avatar base-layer" />
-        <img src={hairStyles[hairIndex]} alt="Hair" className="edit-avatar overlay" />
-        <div className="username-display">{username}</div>
-
-      </div>      
-      
-      */}
 
     
       {menuOpen && (
@@ -378,8 +360,32 @@ function RoomPage() {
             <button onClick={() => { setShowTodo(true); setMenuOpen(false); }}>To-Do List</button>
             <button onClick={() => { setShowAI(true); setMenuOpen(false); }}>AI Assistant</button>
             <button onClick={() => { setShowTimer(true); setMenuOpen(false); }}>Timer</button>
-            <button onClick={() => alert("Invite clicked")}>Invite</button>
-        </div>
+            <button onClick={() => { setShowInvite(true); setMenuOpen(false); }}>Invite</button>
+      </div>
+        )}
+
+
+        {showInvite && (
+          <div className="confirm-overlay">
+            <div className="confirm-box">
+              <h3 className="invite-title">Invite Link</h3>
+              <p className="invite-link">
+                {`${window.location.origin}/room?roomId=${room.toLowerCase()}-${userId}&type=${type}`}
+              </p>
+              <div className="confirm-buttons">
+                <button className="close-btn" onClick={() => setShowInvite(false)}>Close</button>
+                <button
+                  className="copy-btn"
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${window.location.origin}/room?roomId=${room.toLowerCase()}-${userId}&type=${type}`);
+                    alert("Invite link copied to clipboard!");
+                  }}
+                >
+                  Copy Link
+                </button>
+              </div>
+            </div>
+          </div>
         )}
 
         {showTodo && (

@@ -19,9 +19,8 @@ const appid = "555ddb47a67643abbf6e20f62f0e59fa";
 let uidToEmailMap = {}; // Maps Agora UID to user email
 console.log("UID to Email Map:", uidToEmailMap);
 
-
 const token = null;
-let roomId = "main"
+
 let audioTracks = {
   localAudioTrack: null,
   remoteAudioTracks: {},
@@ -29,7 +28,7 @@ let audioTracks = {
 
 let rtcClient;
 
-const initRtc = async () => {
+const initRtc = async (roomId) => {
   rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
   rtcClient.on("user-joined", handleUserJoined);
@@ -60,6 +59,8 @@ const initRtc = async () => {
     const hairIdx = hairStyles.findIndex((hair) => hair.includes(data.hair)) || 0;
 
     // Join the Agora channel
+    // Join the Agora channel with the provided roomId
+    console.log("Joining Agora Channel:", roomId);
     await rtcClient.join(appid, roomId, token, userId);
     audioTracks.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
     console.log("Local audio track created:", audioTracks.localAudioTrack);
@@ -161,11 +162,12 @@ let handleUserLeft = async (user) => {
   document.getElementById(user.uid).remove()
 }
 
-const enterRoom = async (e) => {
-  e.preventDefault()
-  initRtc()
+const enterRoom = async (selectedRoomId) => {
+  roomId = selectedRoomId; // Set the roomId dynamically
+  console.log("Entering Room:", roomId);
 
-}
+  await initRtc(selectedRoomId); // Initialize RTC with the updated roomId
+};
 
 let leaveRoom = async () => {
     console.log("leaveRoom function called");

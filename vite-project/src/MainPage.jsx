@@ -7,6 +7,7 @@ import HomeImg from "./assets/home.png";
 import WhitehouseImg from "./assets/whitehouse.png";
 import University from "./assets/university.png";
 import profileImg from "./assets/profileI.png";
+import privateRoom from "./assets/privateRoom.webp";
 
 import enterRoom from "./AgoraFunc"; // No curly braces for default export
 
@@ -43,15 +44,49 @@ function MainPage() {
     setRoomTypePrompt(true);
   };
 
+  const handlePrivateRoomClick = async () => {
+    const inviteLink = prompt("Enter the invite link to join the private room:");
+  
+    if (!inviteLink) {
+      alert("No link provided!");
+      return;
+    }
+  
+    try {
+      // Extract roomId and type from the invite link
+      const urlParams = new URLSearchParams(new URL(inviteLink).search);
+      const roomId = urlParams.get("roomId");
+      const type = urlParams.get("type");
+  
+      if (!roomId || !type || type !== "private") {
+        alert("Invalid invite link!");
+        return;
+      }
+  
+      console.log("Joining Private Room ID:", roomId);
+  
+      // Navigate to the room page
+      navigate(`/room?roomId=${roomId}&type=private`);
+      await enterRoom(roomId); // Call enterRoom with the extracted roomId
+    } catch (error) {
+      console.error("Error parsing invite link:", error);
+      alert("Invalid invite link format!");
+    }
+  };
+
   const joinRoom = async (type) => {
-    setRoomTypePrompt(false);
+    setRoomTypePrompt(false); // Hide room type prompt
+    let roomId = selectedRoom.toLowerCase(); // Base room name (e.g., "library", "cafe")
   
     if (type === "private") {
       setPrivateConfirm(true); // Show private room confirmation
     } else {
-      navigate(`/room?location=${selectedRoom}&type=public`);
-      await enterRoom(); // Call enterRoom for public rooms
+      roomId = `${roomId}-public`; // Append "public" for public rooms
+      navigate(`/room?roomId=${roomId}&type=public`);
+      await enterRoom(roomId); // Pass the roomId to enterRoom
     }
+  
+    console.log("Room ID:", roomId);
   };
   
 
@@ -99,6 +134,10 @@ function MainPage() {
           <img className="room-image whitehouse-img" src={WhitehouseImg} alt="White House" />
           <div className="Lib-name">Whitehouse</div>
         </div>
+        <div className="room" onClick={(e) => handlePrivateRoomClick("Join private room")}>
+          <img className="room-image whitehouse-img" src={privateRoom} alt="White House" />
+          <div className="Lib-name">Join Private Room</div>
+        </div>
       </div>
 
       {/* Sign Out Confirmation Overlay */}
@@ -137,8 +176,17 @@ function MainPage() {
             <button
                 className="yes-btn"
                 onClick={async () => {
+                  const email = localStorage.getItem("userEmail");
+                  const response = await fetch(`http://localhost:3000/get-profile?email=${email}`);
+                  const data = await response.json();
+                  const userId = data.id;
+      
+                  const roomId = `${selectedRoom.toLowerCase()}-${userId}`;
+                  const inviteLink = `${window.location.origin}/room?roomId=${roomId}&type=private`;
+                  console.log("invite link",inviteLink);
+                  alert(`Copy Link: ${inviteLink}`);
                   navigate(`/room?location=${selectedRoom}&type=private`);
-                  await enterRoom(); // Call enterRoom for private rooms
+                  await enterRoom(roomId); // Call enterRoom for private rooms
                   
                 }}
               >
