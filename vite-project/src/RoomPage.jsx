@@ -116,13 +116,22 @@ function RoomPage() {
         let newTop = prevPosition.top;
         let newLeft = prevPosition.left;
 
-        if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
+        // if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
+        //   newTop = Math.max(0, prevPosition.top - step);
+        // } else if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
+        //   newTop = Math.min(containerRect.height - 100, prevPosition.top + step); // 100 is avatar height
+        // } else if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
+        //   newLeft = Math.max(0, prevPosition.left - step);
+        // } else if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
+        //   newLeft = Math.min(containerRect.width - 100, prevPosition.left + step); // 100 is avatar width
+        // }
+        if (e.key === "ArrowUp") {
           newTop = Math.max(0, prevPosition.top - step);
-        } else if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
+        } else if (e.key === "ArrowDown") {
           newTop = Math.min(containerRect.height - 100, prevPosition.top + step); // 100 is avatar height
-        } else if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
+        } else if (e.key === "ArrowLeft") {
           newLeft = Math.max(0, prevPosition.left - step);
-        } else if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
+        } else if (e.key === "ArrowRight") {
           newLeft = Math.min(containerRect.width - 100, prevPosition.left + step); // 100 is avatar width
         }
 
