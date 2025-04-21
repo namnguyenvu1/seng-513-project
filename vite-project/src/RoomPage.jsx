@@ -233,66 +233,6 @@ function RoomPage() {
   };
 
   useEffect(() => {
-    const uid = Math.floor(Math.random() * 10000);  // change to get from backend
-
-    const initAgora = async () => {
-      rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-
-      rtc.client.on("user-published", async (user, mediaType) => {
-        await rtc.client.subscribe(user, mediaType);
-        if (mediaType === "audio") {
-          user.audioTrack.play();
-        }
-      });
-
-      rtc.client.on("user-left", (user) => {
-        console.log("User left the voice chat:", user.uid);
-      });
-
-      await rtc.client.join(appId, room, token, uid);
-      rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-      await rtc.client.publish([rtc.localAudioTrack]);
-
-      console.log(`Joined room "${room}" as UID ${uid}`);
-    };
-
-    initAgora();
-
-    return () => {
-      rtc.localAudioTrack?.stop();
-      rtc.localAudioTrack?.close();
-      rtc.client?.leave();
-    };
-  }, [room]);
-
-  const handleSendToAI = async () => {
-    if (!aiMessage.trim()) return;
-  
-    try {
-      const res = await fetch("http://localhost:3000/ai-response", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: aiMessage }),
-      });
-  
-      if (res.ok) {
-        const data = await res.json();
-        setChatHistory((prev) => [
-          ...prev,
-          { role: "user", content: aiMessage },
-          { role: "ai", content: data.response },
-        ]);
-        setAiMessage(""); // Clear the input field
-      } else {
-        alert("Failed to get AI response.");
-      }
-    } catch (error) {
-      console.error("Error sending message to AI:", error);
-      alert("An error occurred while communicating with the AI.");
-    }
-  };
-
-  useEffect(() => {
     const fetchTodoList = async () => {
       const email = localStorage.getItem("userEmail");
       if (!email) return;

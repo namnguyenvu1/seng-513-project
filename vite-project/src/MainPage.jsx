@@ -38,23 +38,20 @@ function MainPage() {
     setShowConfirm(false);
   };
 
-  const handleRoomClick = async (e, roomName) => {
+  const handleRoomClick = (roomName) => {
     setSelectedRoom(roomName);
     setRoomTypePrompt(true);
-    await enterRoom(e);
-    
   };
 
-  const joinRoom = (type) => {
+  const joinRoom = async (type) => {
     setRoomTypePrompt(false);
   
     if (type === "private") {
-      setPrivateConfirm(true); // new confirm layer
+      setPrivateConfirm(true); // Show private room confirmation
     } else {
       navigate(`/room?location=${selectedRoom}&type=public`);
+      await enterRoom(); // Call enterRoom for public rooms
     }
-
-    
   };
   
 
@@ -80,25 +77,25 @@ function MainPage() {
       </div>
   
       <div className="rooms-grid">
-        <div className="room" onClick={(e) => handleRoomClick(e,"Library")}>
+        <div className="room" onClick={(e) => handleRoomClick("Library")}>
           <img className="room-image" src={libraryImg}  />
           <div className="Lib-name">Library</div>
           
         </div>
-        <div className="room" onClick={(e) => handleRoomClick(e,"Cafe")}>
+        <div className="room" onClick={(e) => handleRoomClick("Cafe")}>
           <img className="room-image cafe-img" src={CafeImg} alt="Cafe" />
           <div className="cafe-name">Cafe</div>
          
         </div>
-        <div className="room" onClick={(e) => handleRoomClick(e,"University")}>
+        <div className="room" onClick={(e) => handleRoomClick("University")}>
           <img className="room-image" src={University} alt="University" />
           <div className="Lib-name">University</div>
         </div>
-        <div className="room" onClick={(e) => handleRoomClick(e,"Home")}>
+        <div className="room" onClick={(e) => handleRoomClick("Home")}>
           <img className="room-image" src={HomeImg} alt="Home" />
           <div className="Lib-name">Home</div>
         </div>
-        <div className="room" onClick={(e) => handleRoomClick(e,"White House")}>
+        <div className="room" onClick={(e) => handleRoomClick("White House")}>
           <img className="room-image whitehouse-img" src={WhitehouseImg} alt="White House" />
           <div className="Lib-name">Whitehouse</div>
         </div>
@@ -137,7 +134,18 @@ function MainPage() {
         <h3 className = "private-creation-title">Create Private Room</h3>
         <div className="confirm-buttons">
             <button className="no-btn" onClick={() => setPrivateConfirm(false)}>Cancel</button>
-            <button className="yes-btn" onClick={() => navigate(`/room?location=${selectedRoom}&type=private`)}>Accept</button>
+            <button
+                className="yes-btn"
+                onClick={async () => {
+                  navigate(`/room?location=${selectedRoom}&type=private`);
+                  await enterRoom(); // Call enterRoom for private rooms
+                  
+                }}
+              >
+                Accept
+            </button>
+
+
         </div>
         </div>
     </div>
