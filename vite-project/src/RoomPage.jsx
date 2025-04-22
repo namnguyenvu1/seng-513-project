@@ -3,13 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { leaveRoom } from "./AgoraFunc"; 
 
-
 import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
 import arrowIcon from './assets/arrow.png';
-import xIcon from './assets/x.png';
-
+import xIcon from './assets/X.png';
 
 import AgoraRTC from "agora-rtc-sdk-ng";
 
@@ -26,7 +24,6 @@ import hair7 from './assets/hair/hair7.png';
 
 function RoomPage() {
   console.log("RoomPage rendered");
-
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
