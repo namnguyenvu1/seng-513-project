@@ -352,8 +352,8 @@ gap: 12px;
   border-radius: 12px;
   padding: 20px;
   position: relative;
-  transform: scale(0.9);          /* zoom out to 90% */
-  transform-origin: top center;   /* keep it centered */
+  transform: scale(0.9);          
+  transform-origin: top center;   
 } */
 
 .room-layout {

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import { leaveRoom } from "./AgoraFunc"; 
+
 import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
 import arrowIcon from './assets/arrow.png';
 import xIcon from './assets/X.png';
-
 
 import AgoraRTC from "agora-rtc-sdk-ng";
 
@@ -21,6 +23,7 @@ import hair6 from './assets/hair/hair6.png';
 import hair7 from './assets/hair/hair7.png';
 
 function RoomPage() {
+  console.log("RoomPage rendered");
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
@@ -43,6 +46,46 @@ function RoomPage() {
   const bgMusic = useRef(null);
   const timerSound = useRef(null);
   const [isMusicPlaying, setIsMusicPlaying] = useState(true);
+  const [showInvite, setShowInvite] = useState(false); // State for managing the invite overlay
+
+  const socket = useRef(null);
+  useEffect(() => {
+    socket.current = new WebSocket("ws://localhost:8080");
+  
+    socket.current.onopen = () => {
+      console.log("Connected to WebSocket server");
+    };
+  
+    socket.current.onmessage = async (event) => {
+      let data;
+  
+      // Check if the message is a Blob
+      if (event.data instanceof Blob) {
+        const text = await event.data.text(); // Convert Blob to text
+        data = JSON.parse(text); // Parse the text as JSON
+      } else {
+        data = JSON.parse(event.data); // Parse the JSON string
+      }
+  
+      console.log("Received data:", data);
+  
+      // Update the position of the avatar dynamically
+      const avatar = document.getElementById(data.userId);
+      if (avatar) {
+        avatar.style.top = `${data.top}px`;
+        avatar.style.left = `${data.left}px`;
+      }
+    };
+  
+    socket.current.onclose = () => {
+      console.log("Disconnected from WebSocket server");
+    };
+  
+    return () => {
+      socket.current.close();
+    };
+  }, []);
+
 
   useEffect(() => {
     bgMusic.current = new Audio("/bgMusic.mp3");
@@ -109,13 +152,35 @@ function RoomPage() {
   const [avatarPosition, setAvatarPosition] = useState({ top: 100, left: 100 }); // Initial position
  
   // States for user profile
+  
   const [skinIndex, setSkinIndex] = useState(0);
   const [hairIndex, setHairIndex] = useState(0);
   const [username, setUsername] = useState("");
+  const [userId, setuserId] = useState(0);
   const [bio, setBio] = useState("");
 
   const skinTones = [skin1, skin2, skin3];
   const hairStyles = [hair1, hair2, hair3, hair4, hair5, hair6, hair7];
+
+  const handleLeaveRoom = async () => {
+    console.log("Leaving room...");
+    await leaveRoom(); // Call the leaveRoom function
+    navigate("/main"); // Navigate back to the main page
+  };
+
+  /*
+    useEffect(() => {
+    const initializeRoom = async () => {
+      await enterRoom();
+    };
+  
+    initializeRoom();
+  
+    return () => {
+      leaveRoom(); // Clean up resources when the component unmounts
+    };
+  }, []);
+  */
 
   // Fetch user profile data
   useEffect(() => {
@@ -124,7 +189,7 @@ function RoomPage() {
       alert("No user logged in!");
       navigate("/login");
       return;
-    }
+    } 
 
     // Fetch user profile data from the backend
     fetch(`http://localhost:3000/get-profile?email=${email}`)
@@ -140,112 +205,69 @@ function RoomPage() {
         }
         if (data.username) setUsername(data.username);
         if (data.bio) setBio(data.bio);
+        if (data.id) setuserId( data.id ); // Set initial position for the avatar}
       })
       .catch((err) => console.error("Failed to fetch profile data:", err));
   }, []);
 
-    // Handle keyboard movement
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       const step = 15; // Movement step size
-      const roomContainer = document.querySelector(".room-container");
-      const containerRect = roomContainer.getBoundingClientRect();
 
-      setAvatarPosition((prevPosition) => {
-        let newTop = prevPosition.top;
-        let newLeft = prevPosition.left;
-
-        // if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
-        //   newTop = Math.max(0, prevPosition.top - step);
-        // } else if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
-        //   newTop = Math.min(containerRect.height - 100, prevPosition.top + step); // 100 is avatar height
-        // } else if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
-        //   newLeft = Math.max(0, prevPosition.left - step);
-        // } else if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
-        //   newLeft = Math.min(containerRect.width - 100, prevPosition.left + step); // 100 is avatar width
-        // }
-
-        if (e.key === "ArrowUp") {
-          newTop = Math.max(0, prevPosition.top - step);
-        } else if (e.key === "ArrowDown") {
-          newTop = Math.min(containerRect.height - 100, prevPosition.top + step); // 100 is avatar height
-        } else if (e.key === "ArrowLeft") {
-          newLeft = Math.max(0, prevPosition.left - step);
-        } else if (e.key === "ArrowRight") {
-          newLeft = Math.min(containerRect.width - 100, prevPosition.left + step); // 100 is avatar width
-        }
-
-        return { top: newTop, left: newLeft };
-      });
+      const avatar = document.getElementById(userId); // Use the actual user ID
+      const roomLayoutDiv = document.querySelector(".room-layout"); // Reference the room-layout container
+  
+      if (!avatar || !roomLayoutDiv) {
+        console.error("Avatar or room-layout div not found.");
+        return;
+      }
+  
+      const rect = roomLayoutDiv.getBoundingClientRect();
+      const currentTop = parseInt(avatar.style.top, 10) || 0;
+      const currentLeft = parseInt(avatar.style.left, 10) || 0;
+  
+      let newTop = currentTop;
+      let newLeft = currentLeft;
+  
+      // Handle W, S, A, D key movements
+      if (e.key === "w" || e.key === "W") {
+        newTop = Math.max(0, currentTop - step);
+      } else if (e.key === "s" || e.key === "S") {
+        newTop = Math.min(rect.height - avatar.offsetHeight, currentTop + step);
+      } else if (e.key === "a" || e.key === "A") {
+        newLeft = Math.max(0, currentLeft - step);
+      } else if (e.key === "d" || e.key === "D") {
+        newLeft = Math.min(rect.width - avatar.offsetWidth, currentLeft + step);
+      }
+  
+      // Update avatar position locally
+      avatar.style.top = `${newTop}px`;
+      avatar.style.left = `${newLeft}px`;
+  
+      console.log(`Avatar moved to: top=${newTop}px, left=${newLeft}px`);
+  
+      // Broadcast the new position to the WebSocket server
+      if (socket.current && socket.current.readyState === WebSocket.OPEN) {
+        socket.current.send(
+          JSON.stringify({
+            userId,
+            top: newTop,
+            left: newLeft,
+          })
+        );
+      } else {
+        console.warn("WebSocket is not open. Message not sent.");
+      }
     };
-
+  
     window.addEventListener("keydown", handleKeyDown);
-
+  
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [userId]);
 
-  // Agora setup
-  const appId = "555ddb47a67643abbf6e20f62f0e59fa";
-  const token = null; // Add your token here if needed
-  const rtc = {
-    client: null,
-    localAudioTrack: null,
-  };
-
-  useEffect(() => {
-    const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage
-    if (!email) {
-      alert("No user logged in!");
-      navigate("/login");
-      return;
-    }
-
-    fetch(`http://localhost:3000/get-username?email=${email}`)
-      .then((res) => res.json())
-      .then((data) => {
-      if (data.username) {
-        setUsername(data.username);
-      } else {
-        console.error("Username not found in response");
-      }
-      })
-      .catch((err) => console.error("Failed to fetch username:", err));
-  }, []); 
-
-  useEffect(() => {
-    const uid = Math.floor(Math.random() * 10000);  // change to get from backend
-
-    const initAgora = async () => {
-      rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-
-      rtc.client.on("user-published", async (user, mediaType) => {
-        await rtc.client.subscribe(user, mediaType);
-        if (mediaType === "audio") {
-          user.audioTrack.play();
-        }
-      });
-
-      rtc.client.on("user-left", (user) => {
-        console.log("User left the voice chat:", user.uid);
-      });
-
-      await rtc.client.join(appId, room, token, uid);
-      rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-      await rtc.client.publish([rtc.localAudioTrack]);
-
-      console.log(`Joined room "${room}" as UID ${uid}`);
-    };
-
-    initAgora();
-
-    return () => {
-      rtc.localAudioTrack?.stop();
-      rtc.localAudioTrack?.close();
-      rtc.client?.leave();
-    };
-  }, [room]);
 
   const handleSendToAI = async () => {
     if (!aiMessage.trim()) return;
@@ -306,16 +328,6 @@ function RoomPage() {
         )}
         <div className="top-icons">
           <img src={hamburgerIcon} alt="Menu" className="hamburger" onClick={() => setMenuOpen(!menuOpen)}/>
-          <button className='music-toggle-btn' onClick={() => {
-            if (bgMusic.current.paused) {
-              bgMusic.current.play();
-              setIsMusicPlaying(true);
-            } else {
-              bgMusic.current.pause();
-              setIsMusicPlaying(false);
-            }
-            
-          }}> {bgMusic.current?.paused? "🔈 Play Music" : "🔇 Mute Music"} </button>
         </div>
       </div>
 
@@ -323,50 +335,54 @@ function RoomPage() {
         <div className="room-inner">
         <div className="reminder">
           📌 Click on the door to go back to room select
-          <button className="door-overlay" onClick={() => navigate("/main")}></button>
+          <button id="leave-icon" className="door-overlay" onClick={handleLeaveRoom}></button>
         </div>
+
+        {/* 
         <div className="voice-status">
           🔊 Voice chat active in: <strong>{room}</strong>
-        </div>
+        </div>        
+        */}
+
       </div>
 
       {/* Movable User Avatar */}
-      <div
-        className="avatar-stack"
-        style={{
-          position: "absolute",
-          top: avatarPosition.top,
-          left: avatarPosition.left,
-        }}
-      >
-        <div className="username-display">{username}</div>
-        <img src={skinTones[skinIndex]} alt="Skin" className="edit-avatar base-layer" />
-        <img src={hairStyles[hairIndex]} alt="Hair" className="edit-avatar overlay" />
+      <div id="members" className="members"></div>
 
-      </div>
-    
       {menuOpen && (
         <div className="menu-popup">
           <img src={xIcon} alt="Close" style={{width: "20px",height: "20px", position: "absolute", top: "8px", right: "10px", cursor: "pointer"}} onClick={() => setMenuOpen(false)}/>
             <button onClick={() => { setShowTodo(true); setMenuOpen(false); }}>To-Do List</button>
             <button onClick={() => { setShowAI(true); setMenuOpen(false); }}>AI Assistant</button>
             <button onClick={() => { setShowTimer(true); setMenuOpen(false); }}>Timer</button>
-            <button
-              onClick={() => {
-                const pageLink = window.location.href; // Get the current page URL
-                navigator.clipboard.writeText(pageLink) // Copy the link to the clipboard
-                  .then(() => {
-                    alert("Link copied to clipboard"); // Notify the user
-                  })
-                  .catch((err) => {
-                    console.error("Failed to copy link:", err);
-                    alert("Failed to copy link.");
-                  });
-              }}
-            >
-              Invite
-            </button>
-        </div>
+
+            <button onClick={() => { setShowInvite(true); setMenuOpen(false); }}>Invite</button>
+      </div>
+        )}
+
+
+        {showInvite && (
+          <div className="confirm-overlay">
+            <div className="confirm-box">
+              <h3 className="invite-title">Invite Link</h3>
+              <p className="invite-link">
+                {`${window.location.origin}/room?roomId=${room.toLowerCase()}-${userId}&type=${type}`}
+              </p>
+              <div className="confirm-buttons">
+                <button className="close-btn" onClick={() => setShowInvite(false)}>Close</button>
+                <button
+                  className="copy-btn"
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${window.location.origin}/room?roomId=${room.toLowerCase()}-${userId}&type=${type}`);
+                    alert("Invite link copied to clipboard!");
+                  }}
+                >
+                  Copy Link
+                </button>
+              </div>
+            </div>
+          </div>
+
         )}
 
         {showTodo && (
@@ -524,9 +540,24 @@ function RoomPage() {
             </button>
           </div>
         )}
-    
+      <button
+        className="music-toggle-btn"
+        onClick={() => {
+          if (bgMusic.current.paused) {
+            bgMusic.current.play();
+            setIsMusicPlaying(true);
+          } else {
+            bgMusic.current.pause();
+            setIsMusicPlaying(false);
+          }
+        }}
+      >
+        {bgMusic.current?.paused ? "🔈 Play Music" : "🔇 Mute Music"}
+      </button>
       </div>
     </div>
+
+
   );
 }
 
