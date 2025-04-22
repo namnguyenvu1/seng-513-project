@@ -1,3 +1,5 @@
+import AgoraRTC from "agora-rtc-sdk-ng";
+
 import skin1 from './assets/skin/skin1.png';
 import skin2 from './assets/skin/skin2.png';
 import skin3 from './assets/skin/skin3.png';
@@ -12,7 +14,6 @@ import hair7 from './assets/hair/hair7.png';
 const skinTones = [skin1, skin2, skin3];
 const hairStyles = [hair1, hair2, hair3, hair4, hair5, hair6, hair7];
 
-import AgoraRTC from "agora-rtc-sdk-ng";
 const appid = "555ddb47a67643abbf6e20f62f0e59fa";
 
 
