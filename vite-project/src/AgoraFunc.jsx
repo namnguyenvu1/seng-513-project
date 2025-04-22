@@ -13,7 +13,7 @@ const skinTones = [skin1, skin2, skin3];
 const hairStyles = [hair1, hair2, hair3, hair4, hair5, hair6, hair7];
 
 import AgoraRTC from "agora-rtc-sdk-ng";
-const appid = "555ddb47a67643abbf6e20f62f0e59fa";
+const appid = "af8b683923e1462c956875effba014a9";
 
 
 let uidToEmailMap = {}; // Maps Agora UID to user email

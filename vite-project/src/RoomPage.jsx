@@ -3,13 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { leaveRoom } from "./AgoraFunc"; 
 
-
 import "./RoomPage.css";
 import hamburgerIcon from './assets/hamburgermenu.png';
 import timerIcon from './assets/timer.png';
 import arrowIcon from './assets/arrow.png';
 import xIcon from './assets/x.png';
-
 
 import AgoraRTC from "agora-rtc-sdk-ng";
 
@@ -26,7 +24,6 @@ import hair7 from './assets/hair/hair7.png';
 
 function RoomPage() {
   console.log("RoomPage rendered");
-
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
@@ -53,7 +50,7 @@ function RoomPage() {
 
   const socket = useRef(null);
   useEffect(() => {
-    socket.current = new WebSocket("ws://localhost:8080");
+    socket.current = new WebSocket("ws://localhost:4701");
   
     socket.current.onopen = () => {
       console.log("Connected to WebSocket server");
@@ -61,7 +58,7 @@ function RoomPage() {
   
     socket.current.onmessage = async (event) => {
       let data;
-  
+    
       // Check if the message is a Blob
       if (event.data instanceof Blob) {
         const text = await event.data.text(); // Convert Blob to text
@@ -69,15 +66,23 @@ function RoomPage() {
       } else {
         data = JSON.parse(event.data); // Parse the JSON string
       }
-  
+    
       console.log("Received data:", data);
-  
-      // Update the position of the avatar dynamically
-      const avatar = document.getElementById(data.userId);
-      if (avatar) {
-        avatar.style.top = `${data.top}px`;
-        avatar.style.left = `${data.left}px`;
+    
+      // Ensure the avatar exists
+      const membersDiv = document.getElementById("members");
+      let avatar = document.getElementById(data.userId);
+      if (!avatar) {
+        avatar = document.createElement("div");
+        avatar.id = data.userId;
+        avatar.className = "avatar";
+        avatar.style.position = "absolute";
+        membersDiv.appendChild(avatar);
       }
+    
+      // Update the position of the avatar dynamically
+      avatar.style.top = `${data.top}px`;
+      avatar.style.left = `${data.left}px`;
     };
   
     socket.current.onclose = () => {
@@ -185,6 +190,8 @@ function RoomPage() {
   }, []);
   */
 
+
+  
   // Fetch user profile data
   useEffect(() => {
     const email = localStorage.getItem("userEmail"); // Retrieve email from localStorage

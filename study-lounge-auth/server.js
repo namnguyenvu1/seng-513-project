@@ -7,6 +7,7 @@ require("dotenv").config();
 console.log("GROQ_API_KEY:", process.env.GROQ_API_KEY);
 
 
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -486,29 +487,26 @@ app.listen(3000, () => {
 
 
 //------
-
-// Create a WebSocket server on a different port (8080)
+// Start WebSocket server
 const WebSocket = require("ws");
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: 4701 });
 
 wss.on("connection", (ws) => {
-  console.log("A user connected to the WebSocket server");
+  console.log("A user connected");
 
-  wss.on("message", (message) => {
+  ws.on("message", (message) => {
     console.log("Received:", message);
-  
-    // Broadcast the message to all connected clients
+    // Broadcast the message to all clients
     wss.clients.forEach((client) => {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        // Ensure the message is sent as a JSON string
-        client.send(JSON.stringify(message));
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
       }
     });
   });
 
   ws.on("close", () => {
-    console.log("A user disconnected from the WebSocket server");
+    console.log("A user disconnected");
   });
 });
 
-console.log("WebSocket server running on ws://localhost:8080");
+console.log("WebSocket server running on ws://localhost:4701");
