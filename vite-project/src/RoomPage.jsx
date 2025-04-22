@@ -164,6 +164,7 @@ function RoomPage() {
         // } else if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
         //   newLeft = Math.min(containerRect.width - 100, prevPosition.left + step); // 100 is avatar width
         // }
+
         if (e.key === "ArrowUp") {
           newTop = Math.max(0, prevPosition.top - step);
         } else if (e.key === "ArrowDown") {
@@ -350,7 +351,21 @@ function RoomPage() {
             <button onClick={() => { setShowTodo(true); setMenuOpen(false); }}>To-Do List</button>
             <button onClick={() => { setShowAI(true); setMenuOpen(false); }}>AI Assistant</button>
             <button onClick={() => { setShowTimer(true); setMenuOpen(false); }}>Timer</button>
-            <button onClick={() => alert("Invite clicked")}>Invite</button>
+            <button
+              onClick={() => {
+                const pageLink = window.location.href; // Get the current page URL
+                navigator.clipboard.writeText(pageLink) // Copy the link to the clipboard
+                  .then(() => {
+                    alert("Link copied to clipboard"); // Notify the user
+                  })
+                  .catch((err) => {
+                    console.error("Failed to copy link:", err);
+                    alert("Failed to copy link.");
+                  });
+              }}
+            >
+              Invite
+            </button>
         </div>
         )}
 
