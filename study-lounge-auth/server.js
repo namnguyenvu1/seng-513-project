@@ -12,11 +12,19 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MySQL connection config
+// const db = mysql.createConnection({
+//   host: "localhost",
+//   user: "root", // or your MySQL username
+//   password: "vunamnguyen123", // replace with your actual password
+//   database: "study_lounge",
+// });
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root", // or your MySQL username
-  password: "Funnyman41!", // replace with your actual password
-  database: "study_lounge",
+
+  host: process.env.MYSQL_HOST || "db", // Use the environment variable or default to 'db'
+  user: process.env.MYSQL_USER || "root",
+  password: process.env.MYSQL_PASSWORD || "vunamnguyen123",
+  database: process.env.MYSQL_DATABASE || "study_lounge",
+
 });
 
 db.connect((err) => {
