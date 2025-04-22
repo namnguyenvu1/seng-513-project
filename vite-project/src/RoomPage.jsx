@@ -305,6 +305,16 @@ function RoomPage() {
         )}
         <div className="top-icons">
           <img src={hamburgerIcon} alt="Menu" className="hamburger" onClick={() => setMenuOpen(!menuOpen)}/>
+          <button className='music-toggle-btn' onClick={() => {
+            if (bgMusic.current.paused) {
+              bgMusic.current.play();
+              setIsMusicPlaying(true);
+            } else {
+              bgMusic.current.pause();
+              setIsMusicPlaying(false);
+            }
+            
+          }}> {bgMusic.current?.paused? "🔈 Play Music" : "🔇 Mute Music"} </button>
         </div>
       </div>
 
@@ -499,20 +509,7 @@ function RoomPage() {
             </button>
           </div>
         )}
-      <button
-        className="music-toggle-btn"
-        onClick={() => {
-          if (bgMusic.current.paused) {
-            bgMusic.current.play();
-            setIsMusicPlaying(true);
-          } else {
-            bgMusic.current.pause();
-            setIsMusicPlaying(false);
-          }
-        }}
-      >
-        {bgMusic.current?.paused ? "🔈 Play Music" : "🔇 Mute Music"}
-      </button>
+    
       </div>
     </div>
   );

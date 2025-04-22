@@ -355,8 +355,8 @@ gap: 12px;
   border-radius: 12px;
   padding: 20px;
   position: relative;
-  transform: scale(0.9);          /* zoom out to 90% */
-  transform-origin: top center;   /* keep it centered */
+  transform: scale(0.9);          /* zoom out to 90% 
+  transform-origin: top center;   /* keep it centered 
 } */
 
 .room-layout {
@@ -498,15 +498,16 @@ gap: 12px;
 
 .music-toggle-btn {
   position: absolute;
-  top: -70px;
-  right: 20px;
+  top: 10px;
+  color: #000;
+  right: 90px;
   font-size: 11px;
-  padding: 4px 8px;          
-  max-width: 100px;         
+  padding: 9px 43px;          
+  max-width: 10px;         
   white-space: nowrap;        
   background-color: #f3c97b;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   cursor: pointer;
   display: flex;
