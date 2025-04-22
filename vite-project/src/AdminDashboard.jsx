@@ -59,13 +59,12 @@ function AdminDashboard() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newAdmin),
     });
-    const message = await res.text();
 
     if (res.ok) {
       alert("Admin/Staff created successfully.");
       setNewAdmin({ name: "", role: "admin", password: "" }); // Clear fields
     } else {
-      alert(`Error: ${message}`);
+      alert("Failed to create Admin/Staff.");
     }
   };
 
@@ -75,13 +74,12 @@ function AdminDashboard() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: adminToDelete }),
     });
-    const message = await res.text();
 
     if (res.ok) {
       alert("Admin/Staff deleted successfully.");
       setAdminToDelete(""); // Clear input
     } else {
-      alert(`Error: ${message}`);
+      alert("Failed to delete Admin/Staff.");
     }
   };
 
@@ -91,14 +89,13 @@ function AdminDashboard() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: staffToChangePassword, newStaffPassword }),
     });
-    const message = await res.text();
 
     if (res.ok) {
       alert("Staff password updated successfully.");
       setStaffToChangePassword("");
       setNewStaffPassword(""); // Clear input
     } else {
-      alert(`Error: ${message}`);
+      alert("Failed to update staff password.");
     }
   };
 
@@ -108,14 +105,13 @@ function AdminDashboard() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: adminToChangePassword, newAdminPassword }),
     });
-    const message = await res.text(); // get backend response message as plain text
-    
+
     if (res.ok) {
       alert("Admin password updated successfully.");
       setAdminToChangePassword("");
       setNewAdminPassword(""); // Clear input
     } else {
-      alert(`Error: ${message}`);
+      alert("Failed to update admin password.");
     }
   };
 
@@ -125,13 +121,12 @@ function AdminDashboard() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     });
-    const message = await res.text();
 
     if (res.ok) {
       alert("User deleted successfully.");
       setSearchResults((prev) => prev.filter((u) => u.email !== email));
     } else {
-      alert(`Error: ${message}`);
+      alert("Failed to delete user.");
     }
   };
 

@@ -37,12 +37,11 @@ function StaffDashboard() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, newPassword }),
     });
-    const message = await res.text();
 
     if (res.ok) {
       alert("Password updated successfully.");
     } else {
-      alert(`Error: ${message}`);
+      alert("Failed to update password.");
     }
     setEmail("");
     setNewPassword("");

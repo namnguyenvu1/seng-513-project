@@ -19,10 +19,12 @@ app.use(bodyParser.json());
 //   database: "study_lounge",
 // });
 const db = mysql.createConnection({
+
   host: process.env.MYSQL_HOST || "db", // Use the environment variable or default to 'db'
   user: process.env.MYSQL_USER || "root",
   password: process.env.MYSQL_PASSWORD || "vunamnguyen123",
   database: process.env.MYSQL_DATABASE || "study_lounge",
+
 });
 
 db.connect((err) => {
@@ -463,10 +465,25 @@ app.get("/user-count", (req, res) => {
   });
 });
 
+
+// get user ID 
+app.get("/get-user-id", (req, res) => {
+  const { email } = req.query;
+
+  db.query("SELECT id FROM users WHERE email = ?", [email], (err, results) => {
+    if (err) return res.status(500).send("Database error.");
+    if (results.length === 0) return res.status(404).send("User not found.");
+    res.json({ userId: results[0].id });
+  });
+});
+
 // Start server
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });
+
+
+
 
 //------
 
