@@ -9,6 +9,7 @@ import University from "./assets/University.png";
 import profileImg from "./assets/profileI.png";
 import privateRoom from "./assets/PrivateRoom.webp";
 
+
 import enterRoom from "./AgoraFunc"; // No curly braces for default export
 
 function MainPage() {
