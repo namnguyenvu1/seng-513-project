@@ -28,7 +28,6 @@
     position: relative;
   }
 
-  
   .edit-card {
     background-color: #f2ba72;
     border-radius: 16px;
@@ -43,35 +42,39 @@
   .edit-actions {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap; /* ✅ allows stacking on small screens */
-    margin-bottom: 10px;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 0 auto 50px auto; /* center the container */
+    max-width: 256px;          /* limit width of button row */
   }
-  
 
-  .cancel-btn,
-  .save-btn {
-    padding: 10px 20px;
-    width: 150px;
-    max-width: 100%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+  .edit-actions button {
+    vertical-align: middle;
   }
   
-  .cancel-btn {
-    background-color: white;
-    color: red;
-  }
-  
-  .save-btn {
-    background-color: white;
-    color: green;
-  }
-  
+  .edit-actions .cancel-btn,
+  .edit-actions .save-btn {
+  background-color: white !important;
+  padding: 10px 20px;
+  min-width: 100px;
+  width: 120px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-actions .cancel-btn {
+  color: red !important;
+  width: 120px !important;
+}
+
+.edit-actions .save-btn {
+  color: green;
+}
   
   .avatar-section {
     display: flex;
