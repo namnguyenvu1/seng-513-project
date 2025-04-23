@@ -7,6 +7,7 @@ require("dotenv").config();
 console.log("GROQ_API_KEY:", process.env.GROQ_API_KEY);
 
 
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -19,10 +20,12 @@ app.use(bodyParser.json());
 //   database: "study_lounge",
 // });
 const db = mysql.createConnection({
+
   host: process.env.MYSQL_HOST || "db", // Use the environment variable or default to 'db'
   user: process.env.MYSQL_USER || "root",
   password: process.env.MYSQL_PASSWORD || "vunamnguyen123",
   database: process.env.MYSQL_DATABASE || "study_lounge",
+
 });
 
 db.connect((err) => {
@@ -463,35 +466,47 @@ app.get("/user-count", (req, res) => {
   });
 });
 
+
+// get user ID 
+app.get("/get-user-id", (req, res) => {
+  const { email } = req.query;
+
+  db.query("SELECT id FROM users WHERE email = ?", [email], (err, results) => {
+    if (err) return res.status(500).send("Database error.");
+    if (results.length === 0) return res.status(404).send("User not found.");
+    res.json({ userId: results[0].id });
+  });
+});
+
 // Start server
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });
 
-//------
 
-// Create a WebSocket server on a different port (8080)
+
+
+//------
+// Start WebSocket server
 const WebSocket = require("ws");
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: 4701 });
 
 wss.on("connection", (ws) => {
-  console.log("A user connected to the WebSocket server");
+  console.log("A user connected");
 
-  wss.on("message", (message) => {
+  ws.on("message", (message) => {
     console.log("Received:", message);
-  
-    // Broadcast the message to all connected clients
+    // Broadcast the message to all clients
     wss.clients.forEach((client) => {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        // Ensure the message is sent as a JSON string
-        client.send(JSON.stringify(message));
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
       }
     });
   });
 
   ws.on("close", () => {
-    console.log("A user disconnected from the WebSocket server");
+    console.log("A user disconnected");
   });
 });
 
-console.log("WebSocket server running on ws://localhost:8080");
+console.log("WebSocket server running on ws://localhost:4701");
