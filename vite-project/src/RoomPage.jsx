@@ -329,6 +329,11 @@ function RoomPage() {
   
   return (
     <div className="room-container">
+          <div className="clickable-icons">
+          📌 Click on the door to go back to room select
+          </div>
+
+
       <div className="room-header">
         <h2>{room} — {type === "private" ? "Private Room" : "Public Room"}</h2>
         {displayTime && (
@@ -344,7 +349,6 @@ function RoomPage() {
       <div className="room-layout">
         <div className="room-inner">
         <div className="reminder">
-          📌 Click on the door to go back to room select
           <button id="leave-icon" className="door-overlay" onClick={handleLeaveRoom}></button>
         </div>
 
